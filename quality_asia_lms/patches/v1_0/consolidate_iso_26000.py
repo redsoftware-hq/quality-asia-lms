@@ -36,16 +36,28 @@ def _sql_with_retry(query, values):
 			time.sleep(1 * (attempt + 1))
 
 
+def _with_retry(fn):
+	"""Run *fn* with deadlock retry (for ORM delete_doc calls)."""
+	for attempt in range(MAX_RETRIES):
+		try:
+			return fn()
+		except frappe.QueryDeadlockError:
+			if attempt == MAX_RETRIES - 1:
+				raise
+			frappe.db.rollback()
+			time.sleep(1 * (attempt + 1))
+
+
 def execute():
 	if not frappe.db.exists("LMS Course", OLD):
 		return
 
 	if not frappe.db.exists("LMS Course", NEW):
-		frappe.log_error(
+		frappe.throw(
+			f"Cannot consolidate — target course '{NEW}' does not exist. "
+			"The old duplicate will remain until this is resolved.",
 			title="consolidate_iso_26000: canonical course missing",
-			message=f"Cannot consolidate — target course '{NEW}' does not exist.",
 		)
-		return
 
 	# 1. Reassign enrollments
 	enroll_count = _sql_with_retry(
@@ -61,13 +73,13 @@ def execute():
 
 	# 3. Delete old course's lessons and chapters (order: lessons first)
 	for lesson in frappe.get_all("Course Lesson", filters={"course": OLD}, pluck="name"):
-		frappe.delete_doc("Course Lesson", lesson, force=True, ignore_permissions=True)
+		_with_retry(lambda n=lesson: frappe.delete_doc("Course Lesson", n, force=True, ignore_permissions=True))
 
 	for chapter in frappe.get_all("Course Chapter", filters={"course": OLD}, pluck="name"):
-		frappe.delete_doc("Course Chapter", chapter, force=True, ignore_permissions=True)
+		_with_retry(lambda n=chapter: frappe.delete_doc("Course Chapter", n, force=True, ignore_permissions=True))
 
 	# 4. Delete the old course
-	frappe.delete_doc("LMS Course", OLD, force=True, ignore_permissions=True)
+	_with_retry(lambda: frappe.delete_doc("LMS Course", OLD, force=True, ignore_permissions=True))
 
 	print(
 		f"[consolidate_iso_26000] Moved {enroll_count} enrollment(s) and "
