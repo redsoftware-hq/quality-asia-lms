@@ -8,3 +8,4 @@ quality_asia_lms.patches.v1_0.seed_initial_data
 quality_asia_lms.patches.v1_0.remove_password_sidebar_item
 quality_asia_lms.patches.v1_0.seed_iso_auditor_courses
 quality_asia_lms.patches.v1_0.fill_iso_auditor_quizzes
+quality_asia_lms.patches.v1_0.consolidate_iso_26000
