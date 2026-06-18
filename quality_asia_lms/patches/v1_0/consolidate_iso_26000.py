@@ -14,10 +14,26 @@ This patch:
 Idempotent: skips silently if 'iso-26000' does not exist.
 """
 
+import time
+
 import frappe
 
 OLD = "iso-26000"
 NEW = "free-certified-internal-auditor-training-on-iso-26000-social-responsibility"
+
+MAX_RETRIES = 3
+
+
+def _sql_with_retry(query, values):
+	for attempt in range(MAX_RETRIES):
+		try:
+			frappe.db.sql(query, values)
+			return frappe.db.sql("SELECT ROW_COUNT()")[0][0]
+		except frappe.QueryDeadlockError:
+			if attempt == MAX_RETRIES - 1:
+				raise
+			frappe.db.rollback()
+			time.sleep(1 * (attempt + 1))
 
 
 def execute():
@@ -32,22 +48,16 @@ def execute():
 		return
 
 	# 1. Reassign enrollments
-	moved_enroll = frappe.db.sql(
+	enroll_count = _sql_with_retry(
 		"UPDATE `tabLMS Enrollment` SET course = %s WHERE course = %s",
 		(NEW, OLD),
 	)
-	enroll_count = frappe.db.sql(
-		"SELECT ROW_COUNT()",
-	)[0][0]
 
 	# 2. Reassign certificates
-	frappe.db.sql(
+	cert_count = _sql_with_retry(
 		"UPDATE `tabLMS Certificate` SET course = %s WHERE course = %s",
 		(NEW, OLD),
 	)
-	cert_count = frappe.db.sql(
-		"SELECT ROW_COUNT()",
-	)[0][0]
 
 	# 3. Delete old course's lessons and chapters (order: lessons first)
 	for lesson in frappe.get_all("Course Lesson", filters={"course": OLD}, pluck="name"):
