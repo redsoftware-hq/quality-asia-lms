@@ -56,8 +56,8 @@ web_include_css = "/assets/quality_asia_lms/css/brand.css"
 # Home Pages
 # ----------
 
-# application home page (will override Website Settings)
-# home_page = "login"
+# Send guests to the LMS frontend instead of /login.
+home_page = "lms"
 
 # website user home page (by Role)
 # role_home_page = {
