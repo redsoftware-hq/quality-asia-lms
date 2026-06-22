@@ -14,12 +14,16 @@ and a fresh deploy — no fork of the LMS app.
 import base64
 import mimetypes
 
+import re
+
 import frappe
 from frappe import _
 from frappe.utils import add_days, getdate
 from lms.lms.doctype.lms_certificate.lms_certificate import LMSCertificate
 
 QA_TEMPLATE = "QA Certificate"
+IAC_PREFIX = "IAC-"
+_IAC_NUM_RE = re.compile(r"IAC\s*-\s*0*(\d+)", re.IGNORECASE)
 
 # Training runs over two consecutive days; the first day sits 15 days before the
 # certificate's issue date (client rule, 2026-06-10). To shift the window, change
@@ -109,19 +113,47 @@ def format_training_dates(start, end):
 	)
 
 
-class QALMSCertificate(LMSCertificate):
-	"""Stock LMS Certificate plus the certificate PDF attached to its email.
+def _next_iac_number():
+	"""Return the next available IAC sequence number.
 
-	Wired via ``override_doctype_class``; everything else (validation, naming,
-	the after_insert that triggers the email) is inherited unchanged. Only
-	``send_mail`` is overridden to add the attachment — kept in sync with the
-	stock LMS implementation.
+	Scans all existing LMS Certificate names that match the IAC pattern
+	(including the 135 space-variant ``IAC -XXXXX`` rows from the DWM migration)
+	and returns max + 1."""
+	all_names = frappe.db.sql_list("SELECT name FROM `tabLMS Certificate`")
+	max_num = 0
+	for name in all_names:
+		m = _IAC_NUM_RE.match(name)
+		if m:
+			max_num = max(max_num, int(m.group(1)))
+	return max_num + 1
+
+
+class QALMSCertificate(LMSCertificate):
+	"""Stock LMS Certificate with QA customizations.
+
+	Wired via ``override_doctype_class``.
+
+	Customizations:
+	  - ``autoname``: continues the DWM ``IAC-XXXXX`` series so new and legacy
+	    certificates share a single, gap-free numbering convention.  The DWM
+	    migration path (``set_name=old_id``) bypasses autoname entirely.
+	  - ``send_mail``: attaches the certificate PDF to the congratulations email.
 	"""
+
+	def autoname(self):
+		"""Generate the next IAC-XXXXX name, skipping any that already exist."""
+		next_num = _next_iac_number()
+		while True:
+			candidate = f"{IAC_PREFIX}{next_num:05d}"
+			if not frappe.db.exists("LMS Certificate", candidate):
+				self.name = candidate
+				return
+			next_num += 1
 
 	def send_mail(self):
 		from frappe.email.doctype.email_template.email_template import get_email_template
 
-		subject = _("Congratulations on getting certified!")
+		subject = _("Congratulations! Your training certificate is ready")
 		template = "certification"
 		custom_template = frappe.db.get_single_value("LMS Settings", "certification_template")
 

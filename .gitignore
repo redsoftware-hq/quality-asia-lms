@@ -19,3 +19,5 @@ MIGRATION_PLAN.md
 Makefile
 docker-compose.yml
 installer.py
+artifacts/*
+HANDOFF.md

@@ -6,10 +6,12 @@ loads after `lms`, `get_signup_template` below overrides the stock/LMS signup
 form with no fork of either app.
 
 The form collects mandatory Name, Email and Mobile Number, plus optional Company
-Name, Residential Address, Profile Photo and Resume/CV. `sign_up` mirrors
-`lms.lms.user.sign_up` (roles, verification email, country from IP) and additionally
-stores mobile_no (standard) and the custom fields (company_name, address, resume) and
-the standard user_image.
+Name, Residential Address, Profile Photo and Resume/CV.  A random password is
+set internally and a welcome email with a password-reset link is sent so the
+user can set their own password on first login.
+
+Existing-user detection (D3): if the email is already registered, the signup
+returns a friendly message directing the user to reset their password.
 
 The signup page is served to guests, so the two file uploads can't use the
 login-only `/api/method/upload_file` endpoint that the Edit Profile modal (QA-15)
@@ -46,12 +48,12 @@ def _validate_mobile(mobile_no):
 	"""Lenient phone check: only +, digits, spaces, hyphens, 7-15 digits total.
 	Accepts Indian and international numbers; rejects junk and empty."""
 	if not mobile_no:
-		frappe.throw(_("Mobile Number is required"))
+		frappe.throw(_("Please provide your mobile number so we can reach you."))
 	if not ALLOWED_MOBILE_CHARS.match(mobile_no):
-		frappe.throw(_("Please enter a valid mobile number"))
+		frappe.throw(_("That doesn't look like a valid phone number. Please check and try again."))
 	digits = re.sub(r"\D", "", mobile_no)
 	if not (7 <= len(digits) <= 15):
-		frappe.throw(_("Please enter a valid mobile number"))
+		frappe.throw(_("That doesn't look like a valid phone number. Please check and try again."))
 
 
 def _save_signup_file(filename, b64, user_name, allowed_ext, max_bytes, is_private):
@@ -64,17 +66,17 @@ def _save_signup_file(filename, b64, user_name, allowed_ext, max_bytes, is_priva
 
 	ext = os.path.splitext(filename)[1].lower()
 	if ext not in allowed_ext:
-		frappe.throw(_("Unsupported file type for {0}").format(escape_html(filename)))
+		frappe.throw(_("Sorry, {0} isn't a supported file type. Please upload a different format.").format(escape_html(filename)))
 
 	try:
 		content = base64.b64decode(b64, validate=True)
 	except Exception:
-		frappe.throw(_("Could not read the uploaded file"))
+		frappe.throw(_("We couldn't read the uploaded file. Please try again with a different file."))
 
 	if not content:
 		return None
 	if len(content) > max_bytes:
-		frappe.throw(_("File {0} is too large").format(escape_html(filename)))
+		frappe.throw(_("The file {0} is too large. Please upload a smaller file.").format(escape_html(filename)))
 
 	# save_file runs Frappe's own content checks (e.g. it rejects PDFs containing
 	# JavaScript and can't parse corrupt files). Surface those as a clean message
@@ -85,7 +87,7 @@ def _save_signup_file(filename, b64, user_name, allowed_ext, max_bytes, is_priva
 		raise
 	except Exception:
 		frappe.clear_last_message()
-		frappe.throw(_("The file {0} could not be saved. Please upload a valid file.").format(escape_html(filename)))
+		frappe.throw(_("We couldn't save {0}. Please try uploading a different file.").format(escape_html(filename)))
 	return file_doc.file_url
 
 
@@ -102,7 +104,7 @@ def sign_up(
 	resume_content: str = "",
 ):
 	if is_signup_disabled():
-		frappe.throw(_("Sign Up is disabled"), _("Not Allowed"))
+		frappe.throw(_("Registration is currently closed. Please check back later."), _("Registration Closed"))
 
 	email = (email or "").strip()
 	full_name = (full_name or "").strip()
@@ -111,21 +113,21 @@ def sign_up(
 	address = (address or "").strip()
 
 	if not full_name or not email:
-		frappe.throw(_("Name and email are required"))
+		frappe.throw(_("Please provide your name and email address to sign up."))
 	_validate_mobile(mobile_no)
 
 	user = frappe.db.get("User", {"email": email})
 	if user:
 		if user.enabled:
-			return 0, _("Already Registered")
-		return 0, _("Registered but disabled")
+			return 0, _("It looks like you already have an account. Please reset your password to log in.")
+		return 0, _("Your account is currently inactive. Please contact us at trainings@qualityasia.in for help.")
 
 	max_signups = cint(frappe.get_system_settings("max_signups_allowed_per_hour") or 300)
 	if frappe.db.get_creation_count("User", 60) >= max_signups:
 		frappe.respond_as_web_page(
-			_("Temporarily Disabled"),
+			_("Please Try Again Later"),
 			_(
-				"Too many users signed up recently, so the registration is disabled. Please try back in an hour"
+				"We're experiencing a high volume of sign-ups right now. Please try again in about an hour."
 			),
 			http_status_code=429,
 		)
@@ -141,7 +143,9 @@ def sign_up(
 			"country": "",
 			"enabled": 1,
 			"new_password": random_string(10),
+			"send_welcome_email": 1,
 			"user_type": "Website User",
+			"default_app": "lms",
 		}
 	)
 	user.flags.ignore_permissions = True
@@ -180,6 +184,4 @@ def sign_up(
 	if file_values:
 		frappe.db.set_value("User", user.name, file_values)
 
-	if user.flags.email_sent:
-		return 1, _("Please check your email for verification")
-	return 2, _("Please ask your administrator to verify your sign-up")
+	return 1, _("Welcome aboard! We've sent you an email — please check your inbox to set your password and get started.")

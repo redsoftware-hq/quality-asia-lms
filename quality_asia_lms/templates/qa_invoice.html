@@ -1,0 +1,173 @@
+{%- set ctx = get_invoice_context(doc) -%}
+<style>
+	@page { size: A4; margin: 12mm 10mm; }
+
+	/* Neutralise Frappe print wrapper so nothing gets clipped */
+	.print-format, .print-format-gutter { min-height: 0 !important; height: auto !important; padding: 0 !important; margin: 0 !important; }
+	html, body { height: auto !important; display: block !important; background: #fff !important; margin: 0; padding: 0; }
+
+	body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #333; }
+
+	.inv-container { width: 100%; max-width: 750px; margin: 0 auto; padding: 0; }
+
+	/* ── Header ── */
+	.inv-header { width: 100%; margin-bottom: 6px; overflow: hidden; }
+	.inv-header-left { float: left; width: 55%; }
+	.inv-header-right { float: right; width: 40%; text-align: right; padding-top: 10px; }
+	.inv-header::after { content: ""; display: table; clear: both; }
+	.inv-logo { max-height: 55px; max-width: 220px; margin-bottom: 6px; display: block; }
+	.inv-company { font-size: 13px; font-weight: bold; color: #222; margin-bottom: 2px; }
+	.inv-company-addr { font-size: 10px; color: #555; line-height: 1.5; }
+	.inv-title { font-size: 26px; font-weight: bold; color: #e20b0a; letter-spacing: 1px; }
+	.inv-divider { border: none; border-top: 2px solid #e20b0a; margin: 8px 0 10px; }
+
+	/* ── Meta ── */
+	table.inv-meta { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+	table.inv-meta td { padding: 6px 8px; border: 1px solid #ddd; font-size: 11px; }
+	table.inv-meta .lbl { font-weight: bold; background: #f8f8f8; width: 110px; color: #444; }
+
+	/* ── Bill To ── */
+	.inv-billto { border: 1px solid #ddd; padding: 10px 12px; margin-bottom: 14px; background: #fafafa; }
+	.inv-billto-title { font-size: 10px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+	.inv-billto-name { font-size: 13px; font-weight: bold; color: #222; margin-bottom: 3px; }
+	.inv-billto-detail { font-size: 10px; color: #555; line-height: 1.6; }
+
+	/* ── Line items ── */
+	table.inv-items { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+	table.inv-items th { background: #e20b0a; color: #fff; border: 1px solid #c00; padding: 6px 6px; font-size: 10px; text-align: center; font-weight: 600; }
+	table.inv-items td { border: 1px solid #ddd; padding: 6px 6px; font-size: 10px; }
+	table.inv-items .r { text-align: right; }
+	table.inv-items .c { text-align: center; }
+	table.inv-items tbody tr:nth-child(even) { background: #fafafa; }
+
+	/* ── Footer (two-column) ── */
+	.inv-footer { width: 100%; margin-top: 6px; overflow: hidden; }
+	.inv-footer-left { float: left; width: 52%; padding-right: 16px; box-sizing: border-box; }
+	.inv-footer-right { float: right; width: 46%; box-sizing: border-box; }
+	.inv-footer::after { content: ""; display: table; clear: both; }
+
+	/* ── Summary table ── */
+	table.inv-summary { width: 100%; border-collapse: collapse; }
+	table.inv-summary td { padding: 5px 8px; font-size: 10px; border: 1px solid #ddd; }
+	table.inv-summary .lbl { text-align: right; font-weight: bold; background: #f8f8f8; color: #444; }
+	table.inv-summary .total-row td { font-weight: bold; font-size: 12px; background: #e20b0a; color: #fff; }
+
+	/* ── Words / Notes ── */
+	.inv-words { font-size: 10px; margin-bottom: 10px; line-height: 1.5; }
+	.inv-words b { font-style: italic; }
+	.inv-notes { font-size: 10px; color: #666; margin-bottom: 10px; }
+
+	/* ── Signature ── */
+	.inv-sig { text-align: center; border: 1px solid #ddd; padding: 10px; margin-top: 10px; background: #fafafa; }
+	.inv-sig img { height: 50px; margin-bottom: 4px; display: block; margin-left: auto; margin-right: auto; }
+	.inv-sig-company { font-size: 9px; font-weight: bold; margin-bottom: 6px; color: #333; }
+	.inv-sig-label { font-size: 9px; color: #666; border-top: 1px solid #bbb; padding-top: 3px; display: block; }
+</style>
+
+<div class="inv-container">
+	<!-- HEADER -->
+	<div class="inv-header">
+		<div class="inv-header-left">
+			{% if ctx.logo %}<img class="inv-logo" src="{{ ctx.logo }}">{% endif %}
+			<div class="inv-company">QUALITY ASIA CERTIFICATIONS PRIVATE LIMITED</div>
+			<div class="inv-company-addr">
+				212 Bhera Enclave, Paschim Vihar<br>
+				Delhi, India 110087<br>
+				GSTIN: 07AAACQ7323F2ZL
+			</div>
+		</div>
+		<div class="inv-header-right">
+			<div class="inv-title">TAX INVOICE</div>
+		</div>
+	</div>
+	<hr class="inv-divider">
+
+	<!-- INVOICE META -->
+	<table class="inv-meta">
+		<tr>
+			<td class="lbl">Invoice #</td>
+			<td>{{ ctx.invoice_number }}</td>
+			<td class="lbl">Place of Supply</td>
+			<td>Delhi (07)</td>
+		</tr>
+		<tr>
+			<td class="lbl">Invoice Date</td>
+			<td>{{ ctx.invoice_date }}</td>
+			<td class="lbl">LUT</td>
+			<td>AD0705260119136</td>
+		</tr>
+	</table>
+
+	<!-- BILL TO -->
+	<div class="inv-billto">
+		<div class="inv-billto-title">Bill To</div>
+		<div class="inv-billto-name">{{ ctx.billing_name }}</div>
+		<div class="inv-billto-detail">
+			{% if ctx.billing_address %}{{ ctx.billing_address }}<br>{% endif %}
+			{% if ctx.billing_gstin %}GSTIN: {{ ctx.billing_gstin }}<br>{% endif %}
+			{% if ctx.billing_pan %}PAN: {{ ctx.billing_pan }}{% endif %}
+		</div>
+	</div>
+
+	<!-- LINE ITEMS -->
+	<table class="inv-items">
+		<thead>
+			<tr>
+				<th style="width:25px">#</th>
+				<th style="text-align:left">Item &amp; Description</th>
+				<th>HSN/SAC</th>
+				<th>Rate</th>
+				<th colspan="2">CGST</th>
+				<th colspan="2">SGST</th>
+				<th>Amount</th>
+			</tr>
+			<tr>
+				<th></th><th></th><th></th><th></th>
+				<th>%</th><th>Amt</th>
+				<th>%</th><th>Amt</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="c">1</td>
+				<td>{{ ctx.course_title }}</td>
+				<td class="c">{{ ctx.hsn_sac }}</td>
+				<td class="r">{{ frappe.format_value(ctx.amount, {"fieldtype": "Currency"}) }}</td>
+				<td class="c">{{ ctx.cgst_rate }}%</td>
+				<td class="r">{{ frappe.format_value(ctx.cgst_amount, {"fieldtype": "Currency"}) }}</td>
+				<td class="c">{{ ctx.sgst_rate }}%</td>
+				<td class="r">{{ frappe.format_value(ctx.sgst_amount, {"fieldtype": "Currency"}) }}</td>
+				<td class="r">{{ frappe.format_value(ctx.total, {"fieldtype": "Currency"}) }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- FOOTER: words + bank (left) / summary + signature (right) -->
+	<div class="inv-footer">
+		<div class="inv-footer-left">
+			<div class="inv-words">
+				Total In Words<br>
+				<b>{{ ctx.total_in_words }}</b>
+			</div>
+			<div class="inv-notes">
+				Notes<br>
+				Thanks for your business.
+			</div>
+		</div>
+		<div class="inv-footer-right">
+			<table class="inv-summary">
+				<tr><td class="lbl">Sub Total</td><td class="r">{{ frappe.format_value(ctx.amount, {"fieldtype": "Currency"}) }}</td></tr>
+				<tr><td class="lbl">CGST ({{ ctx.cgst_rate }}%)</td><td class="r">{{ frappe.format_value(ctx.cgst_amount, {"fieldtype": "Currency"}) }}</td></tr>
+				<tr><td class="lbl">SGST ({{ ctx.sgst_rate }}%)</td><td class="r">{{ frappe.format_value(ctx.sgst_amount, {"fieldtype": "Currency"}) }}</td></tr>
+				{% if ctx.discount %}<tr><td class="lbl">Discount</td><td class="r">(-) {{ frappe.format_value(ctx.discount, {"fieldtype": "Currency"}) }}</td></tr>{% endif %}
+				<tr class="total-row"><td class="lbl">Total</td><td class="r">{{ frappe.format_value(ctx.total, {"fieldtype": "Currency"}) }}</td></tr>
+			</table>
+			<div class="inv-sig">
+				<div class="inv-sig-company">For QUALITY ASIA CERTIFICATIONS<br>PRIVATE LIMITED</div>
+				{% if ctx.signature %}<img src="{{ ctx.signature }}">{% endif %}
+				<div class="inv-sig-label">Authorized Signature</div>
+			</div>
+		</div>
+	</div>
+</div>

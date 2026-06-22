@@ -10,3 +10,17 @@ quality_asia_lms.patches.v1_0.seed_iso_auditor_courses
 quality_asia_lms.patches.v1_0.fill_iso_auditor_quizzes
 quality_asia_lms.patches.v1_0.consolidate_iso_26000
 quality_asia_lms.patches.v1_0.consolidate_iso_26000_retry
+quality_asia_lms.patches.v1_0.simplify_login
+quality_asia_lms.patches.v1_0.seed_admin_user
+quality_asia_lms.patches.v1_0.refresh_certificate_titles
+quality_asia_lms.patches.v1_0.hide_sidebar_items
+quality_asia_lms.patches.v1_0.seed_course_categories
+quality_asia_lms.patches.v1_0.assign_mentor_all_courses
+quality_asia_lms.patches.v1_0.seed_roles_and_accountant
+quality_asia_lms.patches.v1_0.harden_login_settings
+quality_asia_lms.patches.v1_0.delete_test_certificates
+quality_asia_lms.patches.v1_0.backfill_invoice_numbers
+quality_asia_lms.patches.v1_0.set_student_default_app
+quality_asia_lms.patches.v1_0.restore_standard_docperms
+quality_asia_lms.patches.v1_0.seed_finance_workspace
+quality_asia_lms.patches.v1_0.send_backfilled_receipts

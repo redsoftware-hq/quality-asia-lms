@@ -18,7 +18,7 @@ EXTRA_FIELDS = ("mobile_no", "address", "resume")
 def _require_user():
 	user = frappe.session.user
 	if not user or user == "Guest":
-		frappe.throw(_("Please log in to edit your profile."), frappe.PermissionError)
+		frappe.throw(_("Please log in to update your profile."), frappe.PermissionError)
 	return user
 
 

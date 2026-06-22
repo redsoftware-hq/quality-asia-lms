@@ -28,9 +28,9 @@ app_license = "mit"
 # app_include_css = "/assets/quality_asia_lms/css/quality_asia_lms.css"
 # app_include_js = "/assets/quality_asia_lms/js/quality_asia_lms.js"
 
-# include js, css files in header of web template
-# web_include_css = "/assets/quality_asia_lms/css/quality_asia_lms.css"
-# web_include_js = "/assets/quality_asia_lms/js/quality_asia_lms.js"
+# include css in header of web template (login page, portal pages, etc.)
+# Brand skin + login-page cleanup (hide Frappe Cloud / Email Link buttons).
+web_include_css = "/assets/quality_asia_lms/css/brand.css"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "quality_asia_lms/public/scss/website"
@@ -79,6 +79,7 @@ jinja = {
 	"methods": [
 		"quality_asia_lms.overrides.certificate.format_training_dates",
 		"quality_asia_lms.overrides.certificate.qa_cert_image",
+		"quality_asia_lms.overrides.invoice.get_invoice_context",
 	],
 }
 
@@ -166,6 +167,13 @@ override_doctype_class = {
 doc_events = {
 	"LMS Certificate": {
 		"before_insert": "quality_asia_lms.overrides.certificate.prepare_certificate",
+	},
+	"LMS Course": {
+		"before_insert": "quality_asia_lms.overrides.mentor.auto_assign_mentor",
+		"before_save": "quality_asia_lms.overrides.course.sync_paid_category",
+	},
+	"LMS Payment": {
+		"on_update": "quality_asia_lms.overrides.invoice.on_payment_update",
 	},
 }
 
@@ -294,6 +302,8 @@ fixtures = [
 			"LMS Certificate-training_end_date",
 			"LMS Certificate-training_dates",
 			"LMS Certificate-candidate_name_as_printed",
+			"LMS Payment-invoice_number",
+			"LMS Payment-invoice_emailed",
 			"User-company_name",
 			"User-address",
 			"User-resume",
@@ -301,11 +311,14 @@ fixtures = [
 	},
 	{
 		"dt": "Print Format",
-		"filters": [["name", "in", ["QA Certificate"]]],
+		"filters": [["name", "in", ["QA Certificate", "QA Invoice"]]],
 	},
 	{
 		"dt": "Property Setter",
-		"filters": [["name", "in", ["LMS Certificate-main-default_print_format"]]],
+		"filters": [["name", "in", [
+			"LMS Certificate-main-default_print_format",
+			"LMS Payment-main-default_print_format",
+		]]],
 	},
 ]
 
