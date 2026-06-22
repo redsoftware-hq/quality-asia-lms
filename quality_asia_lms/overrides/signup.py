@@ -119,8 +119,10 @@ def sign_up(
 	user = frappe.db.get("User", {"email": email})
 	if user:
 		if user.enabled:
-			return 0, _("It looks like you already have an account. Please reset your password to log in.")
-		return 0, _("Your account is currently inactive. Please contact us at trainings@qualityasia.in for help.")
+			return 0, _("It looks like you already have an account with Quality Asia School. Just reset your password to log in!")
+		# Disabled account (usually a placeholder-email migrated user).
+		# Don't suggest password reset — Frappe silently skips disabled users.
+		return 2, _("It looks like you already have an account with Quality Asia School, but it needs to be activated. Please reach out to us at trainings@qualityasia.in and we'll get you set up.")
 
 	max_signups = cint(frappe.get_system_settings("max_signups_allowed_per_hour") or 300)
 	if frappe.db.get_creation_count("User", 60) >= max_signups:

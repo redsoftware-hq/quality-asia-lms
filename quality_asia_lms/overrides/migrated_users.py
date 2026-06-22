@@ -85,3 +85,40 @@ def update_placeholder_email(old_email, new_email):
 
 	frappe.get_doc("User", new_email).reset_password()
 	print(f"Updated {old_email} → {new_email}, enabled, reset email sent")
+
+
+def enable_real_email_users(dry_run=False):
+	"""Re-enable disabled Website Users whose email is real (non-placeholder).
+
+	DWM-migrated users with genuine email addresses should be able to self-serve
+	a password reset.  Placeholder accounts (@placeholder.qualityasia.in) stay
+	disabled until an admin reconciles their email.
+
+	Idempotent — safe to re-run."""
+	users = frappe.db.sql(
+		"""SELECT name, first_name FROM tabUser
+		WHERE user_type = 'Website User'
+		  AND enabled = 0
+		  AND name NOT LIKE %s""",
+		(f"%@{PLACEHOLDER_DOMAIN}",),
+		as_dict=True,
+	)
+
+	if dry_run:
+		print(f"Would re-enable {len(users)} disabled real-email users")
+		for u in users[:10]:
+			print(f"  {u.name} ({u.first_name})")
+		if len(users) > 10:
+			print(f"  ... and {len(users) - 10} more")
+		return
+
+	enabled = 0
+	for user in users:
+		frappe.db.set_value("User", user.name, "enabled", 1, update_modified=False)
+		enabled += 1
+
+	if enabled:
+		frappe.db.commit()
+	msg = f"Re-enabled {enabled} disabled real-email users (total candidates: {len(users)})"
+	print(msg)
+	frappe.logger("qa_lms").info(msg)

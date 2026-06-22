@@ -175,12 +175,20 @@
                 var code = cint(r.message[0]);
                 var msg = r.message[1];
                 if (code === 0) {
-                    // Existing or disabled user — show a prominent message with reset link.
+                    // Enabled existing user — welcome back + reset link.
                     login.set_status('{{ _("Sign up") }}', 'blue');
                     frappe.msgprint({
                         title: '{{ _("Welcome Back!") }}',
                         indicator: 'blue',
                         message: msg + ' <a href="#forgot">{{ _("Reset your password") }}</a>'
+                    });
+                } else if (code === 2) {
+                    // Disabled account (placeholder) — contact admin, no reset link.
+                    login.set_status('{{ _("Sign up") }}', 'blue');
+                    frappe.msgprint({
+                        title: '{{ _("Almost There!") }}',
+                        indicator: 'yellow',
+                        message: msg
                     });
                 } else {
                     login.set_status('{{ _("You're all set!") }}', 'green');

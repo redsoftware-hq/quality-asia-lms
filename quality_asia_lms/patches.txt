@@ -24,3 +24,5 @@ quality_asia_lms.patches.v1_0.set_student_default_app
 quality_asia_lms.patches.v1_0.restore_standard_docperms
 quality_asia_lms.patches.v1_0.seed_finance_workspace
 quality_asia_lms.patches.v1_0.send_backfilled_receipts
+quality_asia_lms.patches.v1_0.enable_migrated_real_email_users
+quality_asia_lms.patches.v1_0.lockdown_accountant_desk

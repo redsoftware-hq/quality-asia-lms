@@ -136,13 +136,17 @@ after_migrate = [
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+# Block Accountant-only users from listing or reading User records (and any
+# other sensitive doctype reachable via the baseline "Desk User" perm).
+# Uses a permission hook — NOT Custom DocPerm — so it can't re-trigger the
+# perm-wipe that broke enrollment (see QA-38).
+permission_query_conditions = {
+	"User": "quality_asia_lms.overrides.accountant_lockdown.user_query_conditions",
+}
+
+has_permission = {
+	"User": "quality_asia_lms.overrides.accountant_lockdown.user_has_permission",
+}
 
 # DocType Class
 # ---------------
