@@ -8,10 +8,13 @@ BRAND_CSS_HREF = "/assets/quality_asia_lms/css/brand.css"
 # (e.g. adding Mobile/Address/Resume + Change Password to the native Edit Profile
 # modal — QA-15). Injected the same serve-time way as the brand skin.
 PROFILE_JS_HREF = "/assets/quality_asia_lms/js/profile_fields.js"
+# UI patches: billing-field removal, guest-checkout redirect, quiz-summary fix.
+LMS_UI_JS_HREF = "/assets/quality_asia_lms/js/qa_lms_ui.js"
 BRAND_LINK_TAG = (
 	"\t\t<!-- Quality Asia brand skin + portal enhancements (injected by quality_asia_lms.brand) -->\n"
 	f'\t\t<link rel="stylesheet" href="{BRAND_CSS_HREF}">\n'
 	f'\t\t<script defer src="{PROFILE_JS_HREF}"></script>\n'
+	f'\t\t<script defer src="{LMS_UI_JS_HREF}"></script>\n'
 )
 
 # Marker present only in the LMS SPA shell's rendered HTML — lets the
@@ -21,9 +24,7 @@ _LMS_SHELL_MARKER = "/assets/lms/frontend/"
 # Matches a previously-injected QA block (comment + its following <link>/<script>
 # lines) so we can strip-and-reinsert — keeps injection idempotent AND upgrade-safe
 # (an older block that lacked the script gets replaced with the current one).
-_QA_BLOCK_RE = re.compile(
-	r"[ \t]*<!-- Quality Asia brand skin[^\n]*\n(?:[ \t]*<(?:link|script)\b[^\n]*\n)*"
-)
+_QA_BLOCK_RE = re.compile(r"[ \t]*<!-- Quality Asia brand skin[^\n]*\n(?:[ \t]*<(?:link|script)\b[^\n]*\n)*")
 
 
 def _inject_tags(html):
@@ -31,7 +32,7 @@ def _inject_tags(html):
 	if no change is needed. Strips any prior (possibly older) block first."""
 	if "</head>" not in html:
 		return None
-	if BRAND_CSS_HREF in html and PROFILE_JS_HREF in html:
+	if BRAND_CSS_HREF in html and PROFILE_JS_HREF in html and LMS_UI_JS_HREF in html:
 		return None  # already current — nothing to do
 	html = _QA_BLOCK_RE.sub("", html)  # drop any stale block before reinserting
 	return html.replace("</head>", BRAND_LINK_TAG + "\t</head>", 1)
@@ -82,10 +83,7 @@ def inject_brand_css():
 		return
 
 	if not os.path.exists(path):
-		print(
-			f"[quality_asia_lms] {path} not found (frontend not built yet); "
-			"skipping brand CSS injection"
-		)
+		print(f"[quality_asia_lms] {path} not found (frontend not built yet); skipping brand CSS injection")
 		return
 
 	with open(path, encoding="utf-8") as f:
@@ -101,8 +99,10 @@ def inject_brand_css():
 	except OSError as e:
 		# Read-only filesystem (e.g. Frappe Cloud) — the request-time injector
 		# handles skinning there. Never let this abort a migrate.
-		print(f"[quality_asia_lms] could not write brand link to {path} ({e}); "
-			"request-time injector will handle it")
+		print(
+			f"[quality_asia_lms] could not write brand link to {path} ({e}); "
+			"request-time injector will handle it"
+		)
 		return
 
 	print(f"[quality_asia_lms] injected brand CSS link into {path}")
