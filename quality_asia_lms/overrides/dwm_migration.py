@@ -212,6 +212,7 @@ def _user(name, email, mobile, placeholder_log):
 					"first_name": parts[0] or "Candidate",
 					"last_name": parts[1] if len(parts) > 1 else "",
 					"mobile_no": clean_mobile,
+					"enabled": 1,
 					"user_type": "Website User",
 					"send_welcome_email": 0,
 					"roles": [{"role": "LMS Student"}],
@@ -399,12 +400,16 @@ def migrate_if_dump_present():
 	"""
 	from datetime import datetime
 
+	from quality_asia_lms.overrides.migrated_users import enable_real_email_users
+
 	path = _default_dump_path()
 	if not os.path.exists(path):
 		return
 
 	run_summary = run(path)
 	validate_summary = validate()
+
+	enable_real_email_users()
 
 	log = f"--- {datetime.utcnow().isoformat()} UTC ---\nrun:      {run_summary}\nvalidate: {validate_summary}\n"
 	_save_private_file("dwm_migration_log.txt", log)

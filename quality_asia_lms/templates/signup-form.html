@@ -95,7 +95,7 @@
 
     // Returns null if ok, else a user-facing error string.
     const check_file = (file, re, max_mb) => {
-        if (!re.test(file.name)) return '{{ _("This file type isn't supported. Please choose a different file.") }}';
+        if (!re.test(file.name)) return '{{ _("This file type is not supported. Please choose a different file.") }}';
         if (file.size > max_mb * 1024 * 1024) {
             return '{{ _("This file is too large. Maximum size is ") }}' + max_mb + ' MB.';
         }
@@ -162,7 +162,7 @@
                 args.resume_content = await read_base64(resume_file);
             }
         } catch (err) {
-            login.set_status('{{ _("We couldn't read the uploaded file. Please try a different one.") }}', 'red');
+            login.set_status('{{ _("Could not read the uploaded file. Please try a different one.") }}', 'red');
             return false;
         }
 
@@ -191,7 +191,7 @@
                         message: msg
                     });
                 } else {
-                    login.set_status('{{ _("You're all set!") }}', 'green');
+                    login.set_status('{{ _("You are all set!") }}', 'green');
                     frappe.msgprint(msg);
                 }
             },
