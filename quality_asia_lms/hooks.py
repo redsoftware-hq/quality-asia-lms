@@ -179,6 +179,9 @@ doc_events = {
 	"LMS Payment": {
 		"on_update": "quality_asia_lms.overrides.invoice.on_payment_update",
 	},
+	"User": {
+		"validate": "quality_asia_lms.overrides.accountant_lockdown.enforce_accountant_lockdown",
+	},
 }
 
 # Scheduled Tasks

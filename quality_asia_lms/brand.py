@@ -8,13 +8,10 @@ BRAND_CSS_HREF = "/assets/quality_asia_lms/css/brand.css"
 # (e.g. adding Mobile/Address/Resume + Change Password to the native Edit Profile
 # modal — QA-15). Injected the same serve-time way as the brand skin.
 PROFILE_JS_HREF = "/assets/quality_asia_lms/js/profile_fields.js"
-# QA-39: fix category filter "clear" on /lms/courses without forking the Vue SPA.
-COURSE_JS_HREF = "/assets/quality_asia_lms/js/course_filters.js"
 BRAND_LINK_TAG = (
 	"\t\t<!-- Quality Asia brand skin + portal enhancements (injected by quality_asia_lms.brand) -->\n"
 	f'\t\t<link rel="stylesheet" href="{BRAND_CSS_HREF}">\n'
 	f'\t\t<script defer src="{PROFILE_JS_HREF}"></script>\n'
-	f'\t\t<script defer src="{COURSE_JS_HREF}"></script>\n'
 )
 
 # Marker present only in the LMS SPA shell's rendered HTML — lets the
@@ -34,7 +31,7 @@ def _inject_tags(html):
 	if no change is needed. Strips any prior (possibly older) block first."""
 	if "</head>" not in html:
 		return None
-	if BRAND_CSS_HREF in html and PROFILE_JS_HREF in html and COURSE_JS_HREF in html:
+	if BRAND_CSS_HREF in html and PROFILE_JS_HREF in html:
 		return None  # already current — nothing to do
 	html = _QA_BLOCK_RE.sub("", html)  # drop any stale block before reinserting
 	return html.replace("</head>", BRAND_LINK_TAG + "\t</head>", 1)

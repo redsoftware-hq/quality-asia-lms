@@ -1,11 +1,10 @@
-"""QA-39: Create a minimal Finance workspace for the Accountant role.
+"""QA-39: Pin the Accountant user's default workspace to Finance (one-time).
 
-The Accountant user (school@qualityasia.in) should land on a clean page showing
-only a shortcut to the LMS Payment list — no distracting sidebar items or
-default workspaces. This patch:
-1. Creates a "Finance" Workspace with a single LMS Payment shortcut.
-2. Restricts visibility to the Accountant role.
-3. Pins the Accountant user's default_workspace so they land here on login.
+The Finance workspace is shipped as a module-level JSON file and synced on
+every ``bench migrate``.  The ``User.validate`` hook in
+``accountant_lockdown.py`` now auto-pins ``default_workspace = "Finance"``
+for any user with the Accountant role.  This patch remains for the initial
+school@qualityasia.in user on sites that already ran it.
 
 Idempotent — safe to re-run.
 """
@@ -13,49 +12,17 @@ Idempotent — safe to re-run.
 import frappe
 
 
-WORKSPACE_NAME = "Finance"
 ACCOUNTANT_EMAIL = "school@qualityasia.in"
 
 
 def execute():
-	_create_workspace()
-	_pin_user_workspace()
-	frappe.db.commit()
-
-
-def _create_workspace():
-	if frappe.db.exists("Workspace", WORKSPACE_NAME):
-		return
-
-	ws = frappe.new_doc("Workspace")
-	ws.name = WORKSPACE_NAME
-	ws.label = WORKSPACE_NAME
-	ws.title = WORKSPACE_NAME
-	ws.is_hidden = 0
-	ws.public = 1
-	ws.content = "[]"
-
-	ws.append("roles", {"role": "Accountant"})
-
-	ws.append(
-		"shortcuts",
-		{
-			"label": "Payments",
-			"type": "DocType",
-			"link_to": "LMS Payment",
-			"color": "Red",
-			"format": "{} payments",
-			"stats_filter": '{"payment_received": 1}',
-		},
-	)
-
-	ws.flags.ignore_permissions = True
-	ws.flags.ignore_links = True
-	ws.insert()
-	frappe.logger("qa_lms").info(f"Created workspace '{WORKSPACE_NAME}'")
-
-
-def _pin_user_workspace():
 	if not frappe.db.exists("User", ACCOUNTANT_EMAIL):
 		return
-	frappe.db.set_value("User", ACCOUNTANT_EMAIL, "default_workspace", WORKSPACE_NAME)
+
+	user = frappe.get_doc("User", ACCOUNTANT_EMAIL)
+	if "Accountant" not in {r.role for r in user.roles}:
+		return
+
+	# Trigger the validate hook which pins workspace + default_app.
+	user.save(ignore_permissions=True)
+	frappe.db.commit()
