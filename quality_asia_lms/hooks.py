@@ -160,6 +160,10 @@ override_doctype_class = {
 	"Razorpay Settings": "quality_asia_lms.overrides.razorpay_settings.RazorpaySettings",
 	# Attach the certificate PDF to the certification email (in-memory, no File stored).
 	"LMS Certificate": "quality_asia_lms.overrides.certificate.QALMSCertificate",
+	# Issue invoice + email when payment is authorised (upstream uses db.set_value,
+	# so the LMS Payment on_update doc_event never fires for real payments).
+	"LMS Course": "quality_asia_lms.overrides.payment_doctypes.QALMSCourse",
+	"LMS Batch": "quality_asia_lms.overrides.payment_doctypes.QALMSBatch",
 }
 
 # Document Events

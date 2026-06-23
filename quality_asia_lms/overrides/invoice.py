@@ -19,12 +19,27 @@ HSN_SAC = "998311"
 GST_RATE = 9
 
 
+def generate_invoice_for_payment(payment_name):
+	"""Reusable entry point — loads the LMS Payment and issues an invoice + email.
+
+	Safe to call from anywhere (override, patch, bench execute). The guards
+	inside on_payment_update make this fully idempotent: a payment that already
+	has an invoice_number is skipped."""
+	doc = frappe.get_doc("LMS Payment", payment_name)
+	on_payment_update(doc)
+
+
 def on_payment_update(doc, method=None):
 	"""doc_event handler for LMS Payment.on_update.
 
 	Fires only when payment_received is checked and no invoice_number exists yet.
 	Generates the invoice number and enqueues the email asynchronously so the
-	payment flow is never blocked."""
+	payment flow is never blocked.
+
+	Also called directly via generate_invoice_for_payment() from the
+	on_payment_authorized override (overrides/payment_doctypes.py), since the
+	upstream payment-success path uses db.set_value and never triggers on_update.
+	"""
 	if not doc.payment_received:
 		return
 	if doc.get("invoice_number"):
