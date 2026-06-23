@@ -21,3 +21,4 @@ docker-compose.yml
 installer.py
 artifacts/*
 HANDOFF.md
+test.md
