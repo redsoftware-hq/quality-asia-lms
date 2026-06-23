@@ -44,6 +44,7 @@ def execute():
 		frappe.enqueue(
 			_send_invoice_email,
 			queue="short",
+			user="Administrator",
 			payment_name=p.name,
 			invoice_number=p.invoice_number,
 			enqueue_after_commit=True,
