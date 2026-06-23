@@ -220,6 +220,7 @@ override_whitelisted_methods = {
 	# Force India server-side so the browser-supplied country cannot skip 18% GST.
 	"lms.lms.payments.get_payment_link": "quality_asia_lms.overrides.payments.get_payment_link",
 	"lms.lms.utils.get_order_summary": "quality_asia_lms.overrides.payments.get_order_summary",
+	"frappe.core.doctype.user.user.reset_password": "quality_asia_lms.overrides.password_reset.reset_password",
 }
 #
 # each overriding function accepts a `data` argument;
