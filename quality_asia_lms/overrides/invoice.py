@@ -99,10 +99,15 @@ def _send_invoice_email(payment_name, invoice_number=None):
 	``invoice_number`` is passed explicitly by the caller so that the job
 	works correctly even when the background worker picks it up before the
 	DB transaction that wrote the number has fully committed.
+
+	Runs as Administrator because the background worker inherits the buyer's
+	session, and LMS Students don't have print permission on LMS Payment.
 	"""
+	original_user = frappe.session.user
 	try:
+		frappe.set_user("Administrator")
+
 		doc = frappe.get_doc("LMS Payment", payment_name)
-		# Prefer the explicitly supplied number; fall back to the DB value.
 		inv_num = invoice_number or doc.invoice_number
 		if not inv_num:
 			frappe.log_error(
@@ -144,6 +149,8 @@ def _send_invoice_email(payment_name, invoice_number=None):
 		)
 	except Exception:
 		frappe.log_error(title=f"QA Invoice email failed for {payment_name}")
+	finally:
+		frappe.set_user(original_user)
 
 
 def get_invoice_context(doc):
