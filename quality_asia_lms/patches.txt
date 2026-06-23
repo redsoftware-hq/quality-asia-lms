@@ -26,3 +26,4 @@ quality_asia_lms.patches.v1_0.seed_finance_workspace
 quality_asia_lms.patches.v1_0.send_backfilled_receipts
 quality_asia_lms.patches.v1_0.enable_migrated_real_email_users
 quality_asia_lms.patches.v1_0.lockdown_accountant_desk
+quality_asia_lms.patches.v1_0.mark_migrated_records

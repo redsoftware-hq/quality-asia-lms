@@ -26,6 +26,17 @@ from frappe.utils import get_url
 PLACEHOLDER_DOMAIN = "placeholder.qualityasia.in"
 
 
+def suppress_welcome_for_migrated(doc, method=None):
+	"""before_insert hook on User: kill the welcome email for migrated accounts.
+
+	Keyed off the ``is_migrated`` custom field (set by the DWM migration) and
+	the ``in_import`` flag (set during bulk import runs).  The canonical Frappe
+	suppression flag is ``doc.flags.no_welcome_mail``."""
+	if doc.get("is_migrated") or frappe.flags.in_import:
+		doc.flags.no_welcome_mail = True
+		doc.send_welcome_email = 0
+
+
 def send_reset_emails(dry_run=False):
 	"""Send password-reset emails to all enabled migrated users with real emails.
 
@@ -85,6 +96,60 @@ def update_placeholder_email(old_email, new_email):
 
 	frappe.get_doc("User", new_email).reset_password()
 	print(f"Updated {old_email} → {new_email}, enabled, reset email sent")
+
+
+def purge_migrated_cert_emails(dry_run=False):
+	"""Delete unsent certificate emails queued during earlier migration runs.
+
+	These emails bloat ``tabEmail Queue`` (each carries an in-memory PDF
+	attachment).  Only deletes rows whose subject matches the certification
+	congratulations email and whose status is ``Not Sent``.
+
+	Usage::
+
+	  # Dry-run — see how many rows would be deleted
+	  bench --site development.qa-lms execute \\
+	    quality_asia_lms.overrides.migrated_users.purge_migrated_cert_emails \\
+	    --kwargs "{'dry_run': True}"
+
+	  # Actually delete
+	  bench --site development.qa-lms execute \\
+	    quality_asia_lms.overrides.migrated_users.purge_migrated_cert_emails
+	"""
+	subjects = (
+		"Congratulations! Your training certificate is ready",
+		"Congratulations on getting certified!",
+	)
+	placeholders = ", ".join(["%s"] * len(subjects))
+
+	count = frappe.db.sql(
+		f"""SELECT COUNT(*) FROM `tabEmail Queue`
+		WHERE status = 'Not Sent' AND subject IN ({placeholders})""",
+		subjects,
+	)[0][0]
+
+	if dry_run:
+		print(f"Would delete {count} unsent certificate emails from Email Queue")
+		return
+
+	if not count:
+		print("No unsent certificate emails to purge")
+		return
+
+	# Delete recipients first (child table), then the queue entries themselves.
+	frappe.db.sql(
+		f"""DELETE r FROM `tabEmail Queue Recipient` r
+		INNER JOIN `tabEmail Queue` q ON q.name = r.parent
+		WHERE q.status = 'Not Sent' AND q.subject IN ({placeholders})""",
+		subjects,
+	)
+	frappe.db.sql(
+		f"""DELETE FROM `tabEmail Queue`
+		WHERE status = 'Not Sent' AND subject IN ({placeholders})""",
+		subjects,
+	)
+	frappe.db.commit()
+	print(f"Purged {count} unsent certificate emails from Email Queue")
 
 
 def enable_real_email_users(dry_run=False):

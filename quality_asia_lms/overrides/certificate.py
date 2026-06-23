@@ -150,6 +150,17 @@ class QALMSCertificate(LMSCertificate):
 				return
 			next_num += 1
 
+	def send_certification_email(self):
+		"""Skip the entire email + PDF render for migrated (historical) certificates.
+
+		Without this guard every ``bench migrate`` re-run of the DWM import would
+		queue thousands of PDF-bearing emails into ``tabEmail Queue``, bloating the
+		production database.  New (non-migrated) certificates still email normally.
+		"""
+		if self.get("is_migrated") or frappe.flags.in_import:
+			return
+		super().send_certification_email()
+
 	def send_mail(self):
 		from frappe.email.doctype.email_template.email_template import get_email_template
 

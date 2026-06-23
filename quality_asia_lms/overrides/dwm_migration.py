@@ -215,6 +215,7 @@ def _user(name, email, mobile, placeholder_log):
 					"enabled": 1,
 					"user_type": "Website User",
 					"send_welcome_email": 0,
+					"is_migrated": 1,
 					"roles": [{"role": "LMS Student"}],
 				}
 			).insert(ignore_permissions=True)
@@ -303,6 +304,7 @@ def run(path=None, template=None):
 					"published": 1,
 					"training_dates": row.get("training_dates"),
 					"candidate_name_as_printed": row["candidate_name"],
+					"is_migrated": 1,
 				}
 			)
 			cert.flags.ignore_permissions = True

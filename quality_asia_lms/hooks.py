@@ -180,6 +180,7 @@ doc_events = {
 		"on_update": "quality_asia_lms.overrides.invoice.on_payment_update",
 	},
 	"User": {
+		"before_insert": "quality_asia_lms.overrides.migrated_users.suppress_welcome_for_migrated",
 		"validate": "quality_asia_lms.overrides.accountant_lockdown.enforce_accountant_lockdown",
 	},
 }
@@ -221,6 +222,7 @@ override_whitelisted_methods = {
 	"lms.lms.payments.get_payment_link": "quality_asia_lms.overrides.payments.get_payment_link",
 	"lms.lms.utils.get_order_summary": "quality_asia_lms.overrides.payments.get_order_summary",
 	"frappe.core.doctype.user.user.reset_password": "quality_asia_lms.overrides.password_reset.reset_password",
+	"lms.lms.utils.get_course_outline": "quality_asia_lms.overrides.course.get_course_outline",
 }
 #
 # each overriding function accepts a `data` argument;
@@ -315,6 +317,8 @@ fixtures = [
 			"User-company_name",
 			"User-address",
 			"User-resume",
+			"User-is_migrated",
+			"LMS Certificate-is_migrated",
 		]]],
 	},
 	{
