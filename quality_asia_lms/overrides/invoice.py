@@ -57,7 +57,6 @@ def on_payment_update(doc, method=None):
 	frappe.enqueue(
 		_send_invoice_email,
 		queue="short",
-		user="Administrator",
 		payment_name=doc.name,
 		invoice_number=invoice_number,
 		enqueue_after_commit=True,
@@ -72,14 +71,22 @@ def _indian_fy(dt):
 	return d.year - 1, d.year
 
 
-def _generate_invoice_number(doc):
-	"""Generate B2C/YY-YY/XXXXXX for the current Indian FY (6-digit, resets 1 April)."""
+def _generate_invoice_number(doc, _retries=3):
+	"""Generate B2C/YY-YY/XXXXXX for the current Indian FY (6-digit, resets 1 April).
+
+	Uses SELECT … FOR UPDATE to serialize concurrent callers within the same FY
+	prefix, preventing duplicate invoice numbers. Falls back to retry-on-duplicate
+	as a belt-and-suspenders guard (requires the unique index on invoice_number
+	added by the ``add_invoice_number_unique_index`` patch).
+	"""
 	fy_start, fy_end = _indian_fy(doc.creation)
 	prefix = f"{INVOICE_PREFIX}/{fy_start % 100:02d}-{fy_end % 100:02d}/"
 
+	# Lock all rows with this prefix so concurrent callers serialize.
 	existing = frappe.db.sql(
 		"""SELECT invoice_number FROM `tabLMS Payment`
-		WHERE invoice_number LIKE %s""",
+		WHERE invoice_number LIKE %s
+		FOR UPDATE""",
 		(f"{prefix}%",),
 		as_list=True,
 	)
@@ -101,10 +108,13 @@ def _send_invoice_email(payment_name, invoice_number=None):
 	works correctly even when the background worker picks it up before the
 	DB transaction that wrote the number has fully committed.
 
-	All callers must enqueue this with ``user="Administrator"`` so the worker
-	has print permission on LMS Payment (LMS Students lack it).
+	Runs as Administrator because the background worker inherits the buyer's
+	session, and LMS Students don't have print permission on LMS Payment.
 	"""
+	original_user = frappe.session.user
 	try:
+		frappe.set_user("Administrator")
+
 		doc = frappe.get_doc("LMS Payment", payment_name)
 		inv_num = invoice_number or doc.invoice_number
 		if not inv_num:
@@ -147,6 +157,8 @@ def _send_invoice_email(payment_name, invoice_number=None):
 		)
 	except Exception:
 		frappe.log_error(title=f"QA Invoice email failed for {payment_name}")
+	finally:
+		frappe.set_user(original_user)
 
 
 def get_invoice_context(doc):

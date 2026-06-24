@@ -31,7 +31,16 @@
 			headers: { "Content-Type": "application/json", "X-Frappe-CSRF-Token": csrf() },
 			body: post ? JSON.stringify(args) : undefined,
 		})
-			.then(function (r) { return r.json(); })
+			.then(function (r) {
+				if (!r.ok) {
+					return r.json().then(function (d) {
+						var msg = (d._server_messages || d.message || "Something went wrong");
+						try { msg = JSON.parse(msg); if (Array.isArray(msg)) msg = msg.map(function (m) { try { return JSON.parse(m).message; } catch (_) { return m; } }).join("\n"); } catch (_) {}
+						throw new Error(msg);
+					});
+				}
+				return r.json();
+			})
 			.then(function (d) { return d.message; });
 	}
 
@@ -192,6 +201,8 @@
 							mobile_no: mobile.value || "",
 							address: address.value || "",
 							resume: resumeUrl.value || "",
+						}).catch(function (err) {
+							if (window.frappe && frappe.toast) { frappe.toast({ message: err.message || "Could not save profile extras", indicator: "red" }); }
 						});
 					}, false);
 					break;

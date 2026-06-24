@@ -42,7 +42,8 @@ def update_profile_extras(mobile_no=None, address=None, resume=None):
 
 	if mobile_no is not None:
 		mobile_no = mobile_no.strip()
-		_validate_mobile(mobile_no)
+		if mobile_no:
+			_validate_mobile(mobile_no)
 		values["mobile_no"] = mobile_no
 	if address is not None:
 		values["address"] = address.strip()

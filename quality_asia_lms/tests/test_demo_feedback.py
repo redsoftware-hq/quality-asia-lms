@@ -217,6 +217,36 @@ class TestInvoiceIdempotency(unittest.TestCase):
 		mock_gen.assert_not_called()
 		mock_enq.assert_not_called()
 
+	@patch("quality_asia_lms.overrides.invoice.frappe.enqueue")
+	@patch("quality_asia_lms.overrides.invoice._generate_invoice_number", return_value="B2C/26-27/000001")
+	@patch("quality_asia_lms.overrides.invoice.frappe.db.set_value")
+	def test_enqueued_kwargs_match_target_signature(self, mock_set, mock_gen, mock_enq):
+		"""Regression: ensure enqueue kwargs are accepted by _send_invoice_email.
+
+		Commit f2fdf0f passed user='Administrator' to frappe.enqueue, which
+		forwarded it as a kwarg to _send_invoice_email — causing a TypeError
+		in production.  This test binds the kwargs against the real function
+		signature so a mismatch is caught at test time.
+		"""
+		import inspect
+
+		from quality_asia_lms.overrides.invoice import _send_invoice_email, on_payment_update
+
+		doc = self._make_payment(received=True, invoice_number=None)
+		on_payment_update(doc)
+
+		mock_enq.assert_called_once()
+		call_kwargs = mock_enq.call_args
+
+		# The first positional arg is the method itself; the rest are enqueue
+		# control kwargs (queue, enqueue_after_commit) plus method kwargs.
+		enqueue_control_keys = {"queue", "enqueue_after_commit"}
+		method_kwargs = {k: v for k, v in call_kwargs.kwargs.items() if k not in enqueue_control_keys}
+
+		sig = inspect.signature(_send_invoice_email)
+		# This raises TypeError if any kwarg is not in the function's signature
+		sig.bind(**method_kwargs)
+
 
 # ---------------------------------------------------------------------------
 # 4. Brand injection includes qa_lms_ui.js

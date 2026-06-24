@@ -133,6 +133,7 @@ def sign_up(
 			),
 			http_status_code=429,
 		)
+		return 0, _("Too many sign-ups right now. Please try again in about an hour.")
 
 	user = frappe.get_doc(
 		{

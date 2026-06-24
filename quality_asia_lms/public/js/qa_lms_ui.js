@@ -24,6 +24,16 @@
 		return /\/billing\//.test(window.location.pathname);
 	}
 
+	function getCookie(name) {
+		var m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+		return m ? decodeURIComponent(m[1]) : null;
+	}
+
+	function isGuest() {
+		var uid = getCookie("user_id");
+		return !uid || uid === "Guest";
+	}
+
 	/**
 	 * Walk up from a node to find its nearest form-field wrapper.
 	 * The LMS billing form wraps each <FormControl>/<Link> in a <div> whose
@@ -126,7 +136,13 @@
 	function autoRedirectGuest() {
 		if (redirected || !isBillingPage()) return;
 
-		// Detect the NotPermitted card — it has the text "Please login to access this page"
+		if (isGuest()) {
+			redirected = true;
+			window.location.href = "/login?redirect-to=" + encodeURIComponent(window.location.pathname);
+			return;
+		}
+
+		// Fallback: detect the NotPermitted card — it has the text "Please login to access this page"
 		var cards = document.querySelectorAll("div, p, span");
 		for (var i = 0; i < cards.length; i++) {
 			var text = (cards[i].textContent || "").trim();
@@ -198,7 +214,43 @@
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Observer — single watcher for all three concerns                   */
+	/* Item 6 — Friendly "Not Permitted" page text                        */
+	/* ------------------------------------------------------------------ */
+
+	var notPermittedPatched = false;
+
+	function friendlyNotPermitted() {
+		if (notPermittedPatched) return;
+
+		var headings = document.querySelectorAll("h1, h2, h3, div");
+		for (var i = 0; i < headings.length; i++) {
+			var el = headings[i];
+			var text = (el.textContent || "").trim();
+			if (text !== "Not Permitted") continue;
+			if (el.children.length > 0) continue;
+
+			el.textContent = "Login Required";
+
+			var container = el.parentElement;
+			if (!container) continue;
+
+			var children = container.querySelectorAll("p, div, span");
+			for (var j = 0; j < children.length; j++) {
+				var child = children[j];
+				var ct = (child.textContent || "").trim();
+				if (ct === "You are not permitted to access this page." || ct === "Please login to access this page.") {
+					child.textContent = "Please log in to continue.";
+					break;
+				}
+			}
+
+			notPermittedPatched = true;
+			return;
+		}
+	}
+
+	/* ------------------------------------------------------------------ */
+	/* Observer — single watcher for all concerns                         */
 	/* ------------------------------------------------------------------ */
 
 	var observer = new MutationObserver(function () {
@@ -208,6 +260,7 @@
 				cleanBillingFields();
 			}
 			fixQuizSummary();
+			friendlyNotPermitted();
 		} catch (e) {
 			/* fail-safe: never break the stock pages */
 		}
@@ -221,6 +274,7 @@
 			cleanBillingFields();
 		}
 		fixQuizSummary();
+		friendlyNotPermitted();
 	} catch (e) {
 		/* fail-safe */
 	}
