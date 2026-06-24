@@ -6,10 +6,12 @@
  * profile_fields.js — to detect and modify upstream-rendered DOM without
  * forking the LMS frontend.
  *
- * Three concerns:
- *   1. Remove GST / PAN / "Where did you hear" / Coupon from the billing page
+ * Concerns:
+ *   1. Remove GST / PAN / "Where did you hear" / Country / Coupon from billing
  *   2. Auto-redirect logged-out users from billing to /login
- *   3. Replace the confusing "0 out of 0" quiz summary for ungraded quizzes
+ *   3. Mask the transient "Not Permitted" card on billing (all connections)
+ *   4. Replace the confusing "0 out of 0" quiz summary for ungraded quizzes
+ *   5. Replace upstream "Not Permitted" text with friendlier wording everywhere
  */
 (function () {
 	"use strict";
@@ -65,7 +67,60 @@
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Item 3 — Remove billing fields                                     */
+	/* Item 1 — Early CSS mask for the "Not Permitted" card on billing    */
+	/*                                                                    */
+	/* This script is <script defer> in <head>, so it runs BEFORE the Vue */
+	/* SPA paints. Injecting a <style> here hides the NotPermitted card   */
+	/* before it ever becomes visible, preventing the flash on all speeds.*/
+	/* ------------------------------------------------------------------ */
+
+	var billingMaskId = "qa-billing-mask";
+	var maskTimerId = null;
+
+	function injectBillingMask() {
+		if (!isBillingPage()) return;
+		if (document.getElementById(billingMaskId)) return;
+
+		var style = document.createElement("style");
+		style.id = billingMaskId;
+		style.textContent =
+			/* Hide the NotPermitted card (div.rounded-md.border...my-32) */
+			"div.mx-auto.my-32.rounded-md.border { display: none !important; }" +
+			/* Show a centered loader in its place */
+			"body.qa-billing-loading main::after {" +
+			"  content: ''; display: block; width: 2rem; height: 2rem;" +
+			"  margin: 8rem auto; border: 3px solid #e5e7eb;" +
+			"  border-top-color: #6b7280; border-radius: 50%;" +
+			"  animation: qa-spin 0.7s linear infinite;" +
+			"}" +
+			"@keyframes qa-spin { to { transform: rotate(360deg); } }";
+		document.head.appendChild(style);
+		document.body.classList.add("qa-billing-loading");
+
+		// Timeout fallback: if the card is still present after 5s (genuine
+		// denial), unmask it so the user is not stuck on a spinner forever.
+		maskTimerId = setTimeout(function () {
+			removeBillingMask();
+			// Run the friendly text replacement for genuine denial cards
+			friendlyNotPermitted();
+		}, 5000);
+	}
+
+	function removeBillingMask() {
+		var mask = document.getElementById(billingMaskId);
+		if (mask) mask.remove();
+		document.body.classList.remove("qa-billing-loading");
+		if (maskTimerId) {
+			clearTimeout(maskTimerId);
+			maskTimerId = null;
+		}
+	}
+
+	// Inject the mask immediately — runs before SPA paint
+	injectBillingMask();
+
+	/* ------------------------------------------------------------------ */
+	/* Item 2 — Remove billing fields                                     */
 	/* ------------------------------------------------------------------ */
 
 	var billingCleaned = false;
@@ -75,8 +130,10 @@
 
 		var main = document.querySelector("main") || document.body;
 
-		// The billing form contains these labels — remove their wrappers
-		var labelsToRemove = ["GST Number", "PAN Number", "Where did you hear about us?"];
+		// The billing form contains these labels — remove their wrappers.
+		// Country is hidden because the app forces India server-side via a
+		// Property Setter default + payments.py override.
+		var labelsToRemove = ["GST Number", "PAN Number", "Where did you hear about us?", "Country"];
 		var removed = 0;
 
 		for (var i = 0; i < labelsToRemove.length; i++) {
@@ -109,7 +166,7 @@
 						break;
 					}
 				}
-				if (removed > 3) break;
+				if (removed > 4) break;
 			}
 		}
 
@@ -124,11 +181,15 @@
 			}
 		}
 
-		if (removed > 0) billingCleaned = true;
+		if (removed > 0) {
+			billingCleaned = true;
+			// The billing form is now visible — remove the mask/loader
+			removeBillingMask();
+		}
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Item 4 — Guest checkout auto-redirect                              */
+	/* Item 3 — Guest checkout auto-redirect                              */
 	/* ------------------------------------------------------------------ */
 
 	var redirected = false;
@@ -141,39 +202,10 @@
 			window.location.href = "/login?redirect-to=" + encodeURIComponent(window.location.pathname);
 			return;
 		}
-
-		// Fallback: detect the NotPermitted card — it has the text "Please login to access this page"
-		var cards = document.querySelectorAll("div, p, span");
-		for (var i = 0; i < cards.length; i++) {
-			var text = (cards[i].textContent || "").trim();
-			if (text === "Please login to access this page." || text === "Please login to access this page") {
-				// Find the associated login button/link — it's a sibling or nearby <a>/<button>
-				var container = cards[i].closest("div.border, div.rounded-lg, div[class]") || cards[i].parentElement;
-				if (!container) continue;
-
-				var link = container.querySelector("a[href*='/login'], button");
-				if (link) {
-					redirected = true;
-					var href = link.getAttribute("href") || link.dataset.href;
-					if (href && href.indexOf("/login") !== -1) {
-						window.location.href = href;
-					} else {
-						// Construct the redirect URL manually
-						window.location.href = "/login?redirect-to=" + encodeURIComponent(window.location.pathname);
-					}
-					return;
-				}
-
-				// Fallback — redirect directly
-				redirected = true;
-				window.location.href = "/login?redirect-to=" + encodeURIComponent(window.location.pathname);
-				return;
-			}
-		}
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Item 5 — Friendly quiz summary for ungraded quizzes                */
+	/* Item 4 — Friendly quiz summary for ungraded quizzes                */
 	/* ------------------------------------------------------------------ */
 
 	function fixQuizSummary() {
@@ -214,38 +246,68 @@
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Item 6 — Friendly "Not Permitted" page text                        */
+	/* Item 5 — Friendly "Not Permitted" page text                        */
+	/*                                                                    */
+	/* Rewrites both NotPermitted.vue and NoPermission.vue card variants. */
+	/* Uses per-node data-qa-patched flag instead of a global latch so    */
+	/* Vue re-renders get re-patched. Matches with indexOf for tolerance. */
 	/* ------------------------------------------------------------------ */
 
-	var notPermittedPatched = false;
+	var NOT_PERMITTED_STRINGS = ["Not Permitted"];
+	var BODY_STRINGS = [
+		"You are not permitted to access this page.",
+		"Please login to access this page.",
+		"You do not have permission to access this page.",
+	];
 
 	function friendlyNotPermitted() {
-		if (notPermittedPatched) return;
-
-		var headings = document.querySelectorAll("h1, h2, h3, div");
+		var headings = document.querySelectorAll("h1, h2, h3, div, span");
 		for (var i = 0; i < headings.length; i++) {
 			var el = headings[i];
-			var text = (el.textContent || "").trim();
-			if (text !== "Not Permitted") continue;
-			if (el.children.length > 0) continue;
+			if (el.dataset.qaPatched === "1") continue;
 
-			el.textContent = "Login Required";
+			// Get only the direct text content (ignore child element text)
+			var directText = "";
+			for (var n = 0; n < el.childNodes.length; n++) {
+				if (el.childNodes[n].nodeType === 3) {
+					directText += el.childNodes[n].textContent;
+				}
+			}
+			directText = directText.trim();
 
-			var container = el.parentElement;
+			var isTitle = false;
+			for (var t = 0; t < NOT_PERMITTED_STRINGS.length; t++) {
+				if (directText === NOT_PERMITTED_STRINGS[t]) {
+					isTitle = true;
+					break;
+				}
+			}
+			if (!isTitle) continue;
+
+			// Replace the title text node(s) — preserve child elements (red dot span)
+			for (var c = 0; c < el.childNodes.length; c++) {
+				if (el.childNodes[c].nodeType === 3 && el.childNodes[c].textContent.trim()) {
+					el.childNodes[c].textContent = el.childNodes[c].textContent.replace("Not Permitted", "Login Required");
+				}
+			}
+			el.dataset.qaPatched = "1";
+
+			// Find and replace the body text in the parent container
+			var container = el.closest("div.border, div.rounded-md") || el.parentElement;
 			if (!container) continue;
 
 			var children = container.querySelectorAll("p, div, span");
 			for (var j = 0; j < children.length; j++) {
 				var child = children[j];
 				var ct = (child.textContent || "").trim();
-				if (ct === "You are not permitted to access this page." || ct === "Please login to access this page.") {
-					child.textContent = "Please log in to continue.";
-					break;
+				for (var b = 0; b < BODY_STRINGS.length; b++) {
+					if (ct.indexOf(BODY_STRINGS[b]) !== -1) {
+						child.textContent = "Please log in to continue.";
+						child.dataset.qaPatched = "1";
+						break;
+					}
 				}
 			}
-
-			notPermittedPatched = true;
-			return;
 		}
 	}
 

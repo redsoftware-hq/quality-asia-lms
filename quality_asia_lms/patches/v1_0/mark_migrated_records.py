@@ -9,11 +9,34 @@ Idempotent — safe to re-run on every migrate.
 """
 
 import frappe
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 from quality_asia_lms.overrides.migrated_users import PLACEHOLDER_DOMAIN
 
+IS_MIGRATED_FIELD = {
+	"fieldname": "is_migrated",
+	"fieldtype": "Check",
+	"label": "Is Migrated",
+	"default": "0",
+	"hidden": 1,
+	"read_only": 1,
+	"no_copy": 1,
+	"print_hide": 1,
+}
+
 
 def execute():
+	# Custom Fields are applied via fixtures AFTER patches, so the is_migrated
+	# column may not exist yet. create_custom_fields is idempotent and creates
+	# both the Custom Field record and the DB column.
+	create_custom_fields(
+		{
+			"LMS Certificate": [IS_MIGRATED_FIELD],
+			"User": [IS_MIGRATED_FIELD],
+		},
+		update=True,
+	)
+
 	# 1. Flag migrated certificates (candidate_name_as_printed is only set by the migration)
 	certs_flagged = frappe.db.sql("""
 		UPDATE `tabLMS Certificate`
