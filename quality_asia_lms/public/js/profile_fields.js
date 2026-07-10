@@ -31,7 +31,16 @@
 			headers: { "Content-Type": "application/json", "X-Frappe-CSRF-Token": csrf() },
 			body: post ? JSON.stringify(args) : undefined,
 		})
-			.then(function (r) { return r.json(); })
+			.then(function (r) {
+				if (!r.ok) {
+					return r.json().then(function (d) {
+						var msg = (d._server_messages || d.message || "Something went wrong");
+						try { msg = JSON.parse(msg); if (Array.isArray(msg)) msg = msg.map(function (m) { try { return JSON.parse(m).message; } catch (_) { return m; } }).join("\n"); } catch (_) {}
+						throw new Error(msg);
+					});
+				}
+				return r.json();
+			})
 			.then(function (d) { return d.message; });
 	}
 
@@ -120,7 +129,7 @@
 			mobileErr.className = "text-xs";
 			mobileErr.style.color = "#e20a0a";
 			mobileErr.style.display = "none";
-			mobileErr.textContent = "Please enter a valid mobile number";
+			mobileErr.textContent = "Please enter a valid phone number.";
 			block.appendChild(mobileErr);
 
 			// Address (optional)
@@ -146,12 +155,12 @@
 			resumeInput.addEventListener("change", function () {
 				var f = resumeInput.files && resumeInput.files[0];
 				if (!f) return;
-				if (!ALLOWED_RESUME.test(f.name)) { resumeStatus.textContent = "Only PDF/DOC allowed"; resumeStatus.removeAttribute("href"); return; }
-				if (f.size > MAX_RESUME_MB * 1024 * 1024) { resumeStatus.textContent = "File too large (max " + MAX_RESUME_MB + "MB)"; resumeStatus.removeAttribute("href"); return; }
-				resumeStatus.textContent = "Uploading…";
+				if (!ALLOWED_RESUME.test(f.name)) { resumeStatus.textContent = "Please upload a PDF or DOC file."; resumeStatus.removeAttribute("href"); return; }
+				if (f.size > MAX_RESUME_MB * 1024 * 1024) { resumeStatus.textContent = "This file is too large (max " + MAX_RESUME_MB + " MB)."; resumeStatus.removeAttribute("href"); return; }
+				resumeStatus.textContent = "Uploading your file…";
 				uploadResume(f).then(function (url) {
 					if (url) { resumeUrl.value = url; resumeStatus.textContent = "Uploaded: " + f.name; resumeStatus.href = url; }
-					else { resumeStatus.textContent = "Upload failed"; }
+					else { resumeStatus.textContent = "Upload didn't work. Please try again."; }
 				});
 			});
 
@@ -178,7 +187,7 @@
 				email.value = d.email || "";
 				mobile.value = d.mobile_no || "";
 				address.value = d.address || "";
-				if (d.resume) { resumeUrl.value = d.resume; resumeStatus.textContent = "Current resume"; resumeStatus.href = d.resume; }
+				if (d.resume) { resumeUrl.value = d.resume; resumeStatus.textContent = "View current resume"; resumeStatus.href = d.resume; }
 			});
 
 			// save our fields when the modal's Save button is clicked
@@ -192,6 +201,8 @@
 							mobile_no: mobile.value || "",
 							address: address.value || "",
 							resume: resumeUrl.value || "",
+						}).catch(function (err) {
+							if (window.frappe && frappe.toast) { frappe.toast({ message: err.message || "Could not save profile extras", indicator: "red" }); }
 						});
 					}, false);
 					break;

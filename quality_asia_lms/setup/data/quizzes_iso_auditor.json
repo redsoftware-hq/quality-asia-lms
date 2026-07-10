@@ -1,198 +1,5 @@
 [
   {
-    "name": "quiz-iso-9001",
-    "title": "ISO 9001:2015 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-9001-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-9001-quality-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-14001",
-    "title": "ISO 14001:2015 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-14001-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-14001-environmental-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-45001",
-    "title": "ISO 45001:2018 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-45001-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-45001-occupational-health-and-safety-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-27001",
-    "title": "ISO 27001:2022 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-27001-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-27001-information-security-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-13485",
-    "title": "ISO 13485:2016 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-13485-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-13485-medical-devices-quality-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-22000",
-    "title": "ISO 22000:2018 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-22000-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-22000-food-safety-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-50001",
-    "title": "ISO 50001:2018 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-50001-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-50001-energy-management-system",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-42001",
-    "title": "ISO 42001:2023 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 0,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-42001-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-42001-aims",
-    "doctype": "LMS Quiz",
-    "questions": []
-  },
-  {
-    "name": "quiz-iso-27701",
-    "title": "ISO 27701:2019 Final Exam",
-    "max_attempts": 0,
-    "show_answers": 0,
-    "show_submission_history": 0,
-    "total_marks": 9,
-    "passing_percentage": 70,
-    "duration": null,
-    "shuffle_questions": 0,
-    "limit_questions_to": 0,
-    "enable_negative_marking": 0,
-    "marks_to_cut": 1,
-    "lesson": "qa-iso-27701-final-exam-lesson",
-    "course": "free-certified-internal-auditor-training-on-iso-27701-privacy-information-management-system",
-    "doctype": "LMS Quiz",
-    "questions": [
-      {
-        "idx": 1,
-        "question": "QTS-2026-00017",
-        "marks": 2,
-        "type": "Choices"
-      },
-      {
-        "idx": 2,
-        "question": "QTS-2026-00018",
-        "marks": 2,
-        "type": "Choices"
-      },
-      {
-        "idx": 3,
-        "question": "QTS-2026-00019",
-        "marks": 2,
-        "type": "Choices"
-      },
-      {
-        "idx": 4,
-        "question": "QTS-2026-00020",
-        "marks": 2,
-        "type": "Choices"
-      },
-      {
-        "idx": 5,
-        "question": "QTS-2026-00021",
-        "marks": 1,
-        "type": "Choices"
-      }
-    ]
-  },
-  {
     "name": "quiz-iso-26000",
     "title": "ISO 26000:2010 Final Exam",
     "max_attempts": 0,
@@ -401,6 +208,1881 @@
         "question": "QA-FEEDBACK-MATERIAL",
         "marks": 0,
         "question_detail": "How would you rate the comprehensiveness of the training material (topics, depth of content)?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-9001",
+    "title": "ISO 9001:2015 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-9001-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-9001-quality-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-9001-Q01",
+        "marks": 2,
+        "question_detail": "What is the primary purpose of ISO 9001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-9001-Q02",
+        "marks": 2,
+        "question_detail": "Which clause of ISO 9001:2015 deals with the context of the organization?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-9001-Q03",
+        "marks": 2,
+        "question_detail": "What is required under Clause 6 of ISO 9001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-9001-Q04",
+        "marks": 2,
+        "question_detail": "Which of the following is NOT a requirement of ISO 9001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-9001-Q05",
+        "marks": 2,
+        "question_detail": "Under ISO 9001:2015, what is the purpose of the management review?",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-9001-Q06",
+        "marks": 2,
+        "question_detail": "What is the focus of Clause 8 in ISO 9001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-9001-Q07",
+        "marks": 2,
+        "question_detail": "How should an organization handle nonconformities according to ISO 9001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-9001-Q08",
+        "marks": 2,
+        "question_detail": "Which concept is emphasized by ISO 9001:2015 for making informed decisions?",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-9001-Q09",
+        "marks": 2,
+        "question_detail": "Which principle of auditing emphasizes the need for auditors to be unbiased and fair?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-9001-Q10",
+        "marks": 2,
+        "question_detail": "During an audit, what is the purpose of the opening meeting?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-9001-Q11",
+        "marks": 2,
+        "question_detail": "Which technique is commonly used by auditors to gather evidence during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-9001-Q12",
+        "marks": 2,
+        "question_detail": "What should an auditor do if they identify a potential nonconformity during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-9001-Q13",
+        "marks": 2,
+        "question_detail": "An audit plan outlines the scope, objectives, and resources required for an audit.",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-9001-Q14",
+        "marks": 2,
+        "question_detail": "What is the role of audit evidence in an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-9001-Q15",
+        "marks": 2,
+        "question_detail": "What is the purpose of a closing meeting in an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-9001-Q16",
+        "marks": 2,
+        "question_detail": "Documentation review is not a necessary part of an audit.",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-9001-Q17",
+        "marks": 2,
+        "question_detail": "What should be the first step in addressing the issue of out-of-specification components during the audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-9001-Q18",
+        "marks": 2,
+        "question_detail": "What is the primary purpose of reviewing the effectiveness of corrective actions?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-9001-Q19",
+        "marks": 2,
+        "question_detail": "Which clause of ISO 9001:2015 is relevant for inventory management and record accuracy?",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-9001-Q20",
+        "marks": 2,
+        "question_detail": "How can the effectiveness of the new inventory reconciliation process be evaluated?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-14001",
+    "title": "ISO 14001:2015 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-14001-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-14001-environmental-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-14001-Q01",
+        "marks": 2,
+        "question_detail": "What is the primary objective of ISO 14001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-14001-Q02",
+        "marks": 2,
+        "question_detail": "Which clause of ISO 14001:2015 deals with the context of the organization?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-14001-Q03",
+        "marks": 2,
+        "question_detail": "Which of the following statements about ISO 14001:2015 is true?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-14001-Q04",
+        "marks": 2,
+        "question_detail": "In ISO 14001:2015, what is the focus of clause 9, \"Performance Evaluation\"?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-14001-Q05",
+        "marks": 2,
+        "question_detail": "What is the meaning of \"Environmental Aspect\" in the context of ISO 14001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-14001-Q06",
+        "marks": 2,
+        "question_detail": "The concept of ‘Life Cycle Perspective’ is introduced in which clause of ISO 14001:2015?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-14001-Q07",
+        "marks": 2,
+        "question_detail": "Measurable Environmental Objectives is a requirement of the ISO 14001:2015 standard.",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-14001-Q08",
+        "marks": 2,
+        "question_detail": "An organization can be certified to ISO 14001:2015 with legal non-compliances",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-14001-Q09",
+        "marks": 2,
+        "question_detail": "Which principle of auditing emphasizes the need for auditors to be unbiased and fair?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-14001-Q10",
+        "marks": 2,
+        "question_detail": "An internal audit can be used to:",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-14001-Q11",
+        "marks": 2,
+        "question_detail": "When an auditor is presented with data as objective evidence, to ensure compliance or corrective action, he / she should:",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-14001-Q12",
+        "marks": 2,
+        "question_detail": "What should an auditor do if they identify a potential nonconformity during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-14001-Q13",
+        "marks": 2,
+        "question_detail": "Data supporting the existence or verify of ‘something’ is called",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-14001-Q14",
+        "marks": 2,
+        "question_detail": "What is the role of audit evidence in an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-14001-Q15",
+        "marks": 2,
+        "question_detail": "What is the purpose of a closing meeting in an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-14001-Q16",
+        "marks": 2,
+        "question_detail": "A third party audit is",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-14001-Q17",
+        "marks": 2,
+        "question_detail": "What is the most appropriate corrective action the organization should consider?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-14001-Q18",
+        "marks": 2,
+        "question_detail": "In light of the organization’s environmental objective to reduce hazardous waste by 20%, what should be done to ensure this goal is met?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-14001-Q19",
+        "marks": 2,
+        "question_detail": "What should be your first step as an auditor after noticing that emissions monitoring data has not been consistently recorded for the past t",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-14001-Q20",
+        "marks": 2,
+        "question_detail": "What should be the next step if you find that the lack of emissions data recording is related to staff not being trained on the monitoring e",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-45001",
+    "title": "ISO 45001:2018 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-45001-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-45001-occupational-health-and-safety-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-45001-Q01",
+        "marks": 2,
+        "question_detail": "What is the main purpose of ISO 45001:2018?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-45001-Q02",
+        "marks": 2,
+        "question_detail": "Which of the following is an example of a hazard in the workplace?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-45001-Q03",
+        "marks": 2,
+        "question_detail": "What should be done when a nonconformity is identified in the OHS management system?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-45001-Q04",
+        "marks": 2,
+        "question_detail": "Which of the following statements about worker participation in the context of ISO 45001 is TRUE?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-45001-Q05",
+        "marks": 2,
+        "question_detail": "What must an organization do when it identifies legal and other requirements as part of Clause 6.1.3?",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-45001-Q06",
+        "marks": 2,
+        "question_detail": "According to ISO 45001, what is the purpose of the hierarchy of controls?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-45001-Q07",
+        "marks": 2,
+        "question_detail": "ISO 45001:2018 only applies to manufacturing industries.",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-45001-Q08",
+        "marks": 2,
+        "question_detail": "Worker participation is optional when implementing ISO 45001:2018.",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-45001-Q09",
+        "marks": 2,
+        "question_detail": "During an ISO 45001 internal audit, the auditor notices a document showing outdated legal requirements. What should the auditor do?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-45001-Q10",
+        "marks": 2,
+        "question_detail": "How should an auditor handle evidence that suggests a near miss was not reported as required by the OHS management system?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-45001-Q11",
+        "marks": 2,
+        "question_detail": "Which of the following is the best approach for gathering evidence during an ISO 45001 internal audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-45001-Q12",
+        "marks": 2,
+        "question_detail": "What should an auditor do if they identify a potential nonconformity during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-45001-Q13",
+        "marks": 2,
+        "question_detail": "In an ISO 45001 internal audit, nonconformities should only be reported if they lead to incidents.",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-45001-Q14",
+        "marks": 2,
+        "question_detail": "What should the auditor do if they identify an unsafe condition during the audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-45001-Q15",
+        "marks": 2,
+        "question_detail": "How should audit findings be documented?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-45001-Q16",
+        "marks": 2,
+        "question_detail": "Which of the following is a sign of an effective OHS communication process during an internal audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-45001-Q17",
+        "marks": 2,
+        "question_detail": "What is the most critical issue that the internal audit team should address based on the findings?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-45001-Q18",
+        "marks": 2,
+        "question_detail": "What does the lack of regular safety meetings indicate about XYZ Construction Ltd.'s OHS management system?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-45001-Q19",
+        "marks": 2,
+        "question_detail": "What is the primary concern related to employee understanding of the safety policy?",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-45001-Q20",
+        "marks": 2,
+        "question_detail": "What action should the internal audit team recommend to enhance the effectiveness of incident reporting?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-50001",
+    "title": "ISO 50001:2018 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-50001-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-50001-energy-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-50001-Q01",
+        "marks": 2,
+        "question_detail": "Which of the following is NOT a requirement when determining the context of the organization (Clause 4.1)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-50001-Q02",
+        "marks": 2,
+        "question_detail": "What is the role of Energy Performance Indicators (EnPIs) as per Clause 6.4?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-50001-Q03",
+        "marks": 2,
+        "question_detail": "When conducting an energy review (Clause 6.3), what is a critical output of the process?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-50001-Q04",
+        "marks": 2,
+        "question_detail": "What is the key requirement when procuring energy-using equipment as per Clause 8.3?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-50001-Q05",
+        "marks": 2,
+        "question_detail": "Which of the following best describes the purpose of the energy baseline (Clause 6.5)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-50001-Q06",
+        "marks": 2,
+        "question_detail": "Which of the following actions is required to address a nonconformity as per Clause 10.2?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-50001-Q07",
+        "marks": 2,
+        "question_detail": "The energy performance improvement under ISO 50001:2018 is required only for Significant Energy Uses (SEUs).",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-50001-Q08",
+        "marks": 2,
+        "question_detail": "The organization is required to review and update the energy baseline periodically if energy performance factors change significantly.",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-50001-Q09",
+        "marks": 2,
+        "question_detail": "Which of the following would be considered a nonconformity during an ISO 50001 audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-50001-Q10",
+        "marks": 2,
+        "question_detail": "When assessing compliance with Clause 6.3 (Energy Review), what key element should the auditor prioritize?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-50001-Q11",
+        "marks": 2,
+        "question_detail": "How should an auditor handle an observation that does not directly violate ISO 50001 requirements but may lead to future issues?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-50001-Q12",
+        "marks": 2,
+        "question_detail": "Which of the following indicates an effective internal audit process during an ISO 50001 audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-50001-Q13",
+        "marks": 2,
+        "question_detail": "An auditor observes that energy performance targets have not been met for two consecutive years. What is the best course of action?",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-50001-Q14",
+        "marks": 2,
+        "question_detail": "What key attribute should be assessed when auditing energy performance indicators (EnPIs)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-50001-Q15",
+        "marks": 2,
+        "question_detail": "How should audit findings be documented?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-50001-Q16",
+        "marks": 2,
+        "question_detail": "Which of the following is a requirement for closing an ISO 50001 audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-50001-Q17",
+        "marks": 2,
+        "question_detail": "During an ISO 50001 audit at EcoTech Manufacturing, which would be considered a nonconformity?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-50001-Q18",
+        "marks": 2,
+        "question_detail": "Which scenario violates the procurement requirements of Clause 8.3?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-50001-Q19",
+        "marks": 2,
+        "question_detail": "What is the most appropriate finding related to GreenWorks' failure to review the energy baseline after operational changes?",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-50001-Q20",
+        "marks": 2,
+        "question_detail": "Which of the following is a major nonconformity related to GreenWorks’ procurement process?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-22000",
+    "title": "ISO 22000:2018 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-22000-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-22000-food-safety-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-22000-Q01",
+        "marks": 2,
+        "question_detail": "Which of the following is NOT explicitly required under Clause 6.1 (Actions to address risks and opportunities) of ISO 22000:2018?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-22000-Q02",
+        "marks": 2,
+        "question_detail": "Under Clause 7.5 (Documented Information), what is required to ensure the integrity of documented information?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-22000-Q03",
+        "marks": 2,
+        "question_detail": "What is the purpose of a Traceability System (Clause 8.3) as per ISO 22000:2018?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-22000-Q04",
+        "marks": 2,
+        "question_detail": "What is the key requirement for hazard control (Clause 8.5) when applying HACCP principles?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-22000-Q05",
+        "marks": 2,
+        "question_detail": "What is the organization’s responsibility for nonconformities under Clause 8.9?",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-22000-Q06",
+        "marks": 2,
+        "question_detail": "What is a key requirement for conducting internal audits as per Clause 9.2?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-22000-Q07",
+        "marks": 2,
+        "question_detail": "Documented information must always be stored in digital format as per Clause 7.5.",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-22000-Q08",
+        "marks": 2,
+        "question_detail": "What must organizations establish under Clause 8.4 (Emergency Preparedness and Response)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-22000-Q09",
+        "marks": 2,
+        "question_detail": "Which of the following is the primary objective of the opening meeting during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-22000-Q10",
+        "marks": 2,
+        "question_detail": "What is considered the most reliable form of audit evidence?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-22000-Q11",
+        "marks": 2,
+        "question_detail": "Which of the following is true about risk-based auditing in the context of ISO 22000:2018?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-22000-Q12",
+        "marks": 2,
+        "question_detail": "Which of the following is the MOST critical skill for an ISO 22000:2018 auditor?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-22000-Q13",
+        "marks": 2,
+        "question_detail": "During an audit, the auditee provides a Corrective Action Plan (CAP) for a nonconformity. The auditor's responsibility is to:",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-22000-Q14",
+        "marks": 2,
+        "question_detail": "Which of the following actions should an auditor take after identifying a major nonconformity in a food safety audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-22000-Q15",
+        "marks": 2,
+        "question_detail": "An audit plan should only focus on reviewing documentation and not on observing the actual processes.",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-22000-Q16",
+        "marks": 2,
+        "question_detail": "Verbal statements from employees during an audit can be considered sufficient audit evidence in the absence of physical records.",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-22000-Q17",
+        "marks": 2,
+        "question_detail": "Clause 8.5.2 (Hazard Control) focuses on the monitoring of CCPs. What is the critical non-conformance in this scenario?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-22000-Q18",
+        "marks": 2,
+        "question_detail": "Under Clause 7.5 (Documented Information), what is the main implementation gap in this scenario?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-22000-Q19",
+        "marks": 2,
+        "question_detail": "Under Clause 9.2.2 (Internal Audit Program), what is the organization’s major nonconformance regarding the internal audit plan?",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-22000-Q20",
+        "marks": 2,
+        "question_detail": "According to Clause 8.7 (Control of Monitoring and Measuring), what should be the immediate action for the missing calibration records?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-27001",
+    "title": "ISO 27001:2022 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 38,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-27001-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-27001-information-security-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-27001-Q01",
+        "marks": 2,
+        "question_detail": "True or false? ISO/IEC 27001 does not allow for an organization implementing an ISMS to use remote working, because the security risks assoc",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-27001-Q02",
+        "marks": 2,
+        "question_detail": "The document where the organization should include the information security controls applied, those not applied, and justifications is calle",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-27001-Q03",
+        "marks": 2,
+        "question_detail": "Besides detection and repair software, what else do you consider to be essential for adequate malware protection?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-27001-Q04",
+        "marks": 2,
+        "question_detail": "In your opinion the control titled Capacity management (8.6) is primarily intended to preserve which property of information security?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-27001-Q05",
+        "marks": 2,
+        "question_detail": "Imagine you find a USB device in the hallway at work. What's the best thing to do?",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-27001-Q06",
+        "marks": 2,
+        "question_detail": "In which situation should the ISMS scope be revised?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-27001-Q07",
+        "marks": 2,
+        "question_detail": "Risk treatment always requires the elimination of all identified risks.",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-27001-Q08",
+        "marks": 2,
+        "question_detail": "What is the primary purpose of an opening meeting during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-27001-Q09",
+        "marks": 2,
+        "question_detail": "What is the auditor’s role when a nonconformity is identified?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-27001-Q10",
+        "marks": 2,
+        "question_detail": "An internal audit reveals that a key control (Data Leakage Prevention) was partially implemented due to budget constraints. What is the audi",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-27001-Q11",
+        "marks": 2,
+        "question_detail": "During an internal audit, you find that the \"Confidentiality or Non-Disclosure Agreement\" (6.6) was not signed by a recently onboarded contr",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-27001-Q12",
+        "marks": 2,
+        "question_detail": "During an audit, the organization reports that their risk assessment process has not been reviewed in over two years. How should you proceed",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-27001-Q13",
+        "marks": 2,
+        "question_detail": "How should an auditor handle a situation where evidence contradicts employee statements?",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-27001-Q14",
+        "marks": 2,
+        "question_detail": "How can an internal auditor evaluate the effectiveness of technical controls under Annex A?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-27001-Q15",
+        "marks": 2,
+        "question_detail": "During an internal audit, what is the best way to evaluate compliance with Clause 6 (Planning)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-27001-Q16",
+        "marks": 2,
+        "question_detail": "What is the primary nonconformity in this scenario?",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-27001-Q17",
+        "marks": 2,
+        "question_detail": "If the organization does not update its SoA, what is the most likely consequence?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-27001-Q18",
+        "marks": 2,
+        "question_detail": "Which of the following is the most critical gap in the incident management process?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-27001-Q19",
+        "marks": 2,
+        "question_detail": "What should be the next step for the auditor to ensure compliance with ISO 27001?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-13485",
+    "title": "ISO 13485:2016 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-13485-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-13485-medical-devices-quality-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-13485-Q01",
+        "marks": 2,
+        "question_detail": "According to ISO 13485:2016, which of the following is NOT an essential requirement for a Quality Management System (QMS) in a medical devic",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-13485-Q02",
+        "marks": 2,
+        "question_detail": "Which of the following is the primary requirement of ISO 13485:2016 Clause 7.3.6 (Design and Development Verification)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-13485-Q03",
+        "marks": 2,
+        "question_detail": "Under ISO 13485:2016, what is the primary purpose of the Medical Device File?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-13485-Q04",
+        "marks": 2,
+        "question_detail": "As per Clause 8.3 of ISO 13485:2016, what must an organization do if a nonconforming product is identified post-distribution?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-13485-Q05",
+        "marks": 2,
+        "question_detail": "Under ISO 13485:2016 Clause 6.2, which of the following is NOT a required competency verification for personnel involved in medical device m",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-13485-Q06",
+        "marks": 2,
+        "question_detail": "In the context of Clause 7.5.6, what is the main requirement for validation of sterilization processes for sterile medical devices?",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-13485-Q07",
+        "marks": 2,
+        "question_detail": "Which of the following is a mandatory document required for supplier control as per ISO 13485:2016 Clause 7.4.1?",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-13485-Q08",
+        "marks": 2,
+        "question_detail": "In ISO 13485:2016 Clause 5.6 (Management Review), what should be included in the management review inputs?",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-13485-Q09",
+        "marks": 2,
+        "question_detail": "According to ISO 19011:2018, which of the following is the most critical attribute an internal auditor must possess?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-13485-Q10",
+        "marks": 2,
+        "question_detail": "What is the primary purpose of an opening meeting in an internal audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-13485-Q11",
+        "marks": 2,
+        "question_detail": "In the audit planning phase, what should be considered to determine audit frequency?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-13485-Q12",
+        "marks": 2,
+        "question_detail": "What is the best source of objective evidence for verifying process effectiveness during an internal audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-13485-Q13",
+        "marks": 2,
+        "question_detail": "What should an auditor do if a major nonconformity is discovered during an internal audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-13485-Q14",
+        "marks": 2,
+        "question_detail": "In an audit closing meeting, what is the most important activity?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-13485-Q15",
+        "marks": 2,
+        "question_detail": "When evaluating an organization’s risk management process, which factor should an internal auditor prioritize?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-13485-Q16",
+        "marks": 2,
+        "question_detail": "What should an auditor do if the auditee refuses to provide access to required documents?",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-13485-Q17",
+        "marks": 2,
+        "question_detail": "Which of the following is the MOST critical nonconformity that should be addressed before ISO 13485 certification?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-13485-Q18",
+        "marks": 2,
+        "question_detail": "What would be the most effective immediate corrective action for the nonconformities related to supplier evaluation?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-13485-Q19",
+        "marks": 2,
+        "question_detail": "Which nonconformity presents the HIGHEST regulatory risk for the organization?",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-13485-Q20",
+        "marks": 2,
+        "question_detail": "What is the most effective corrective action to prevent recurrence of inadequate internal audits?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-42001",
+    "title": "ISO 42001:2023 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-42001-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-42001-aims",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-42001-Q01",
+        "marks": 2,
+        "question_detail": "Which clause of ISO 42001 introduces the requirement to evaluate if climate change is a relevant issue?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-42001-Q02",
+        "marks": 2,
+        "question_detail": "In AI risk treatment (Clause 6.1.3), what must be developed to justify applicable and non-applicable controls?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-42001-Q03",
+        "marks": 2,
+        "question_detail": "Which of the following is NOT explicitly listed as an AI actor role in ISO 42001?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-42001-Q04",
+        "marks": 2,
+        "question_detail": "What additional mandatory impact assessment is required for high-risk AI activities under the EU AI Act?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-42001-Q05",
+        "marks": 2,
+        "question_detail": "Internal audit planning under ISO 42001 only needs to consider external audit schedules, not internal process importance.",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-42001-Q06",
+        "marks": 2,
+        "question_detail": "The AI risk assessment process must take into account unacceptable, high, limited, and minimal risk categories.",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-42001-Q07",
+        "marks": 2,
+        "question_detail": "Continual improvement under ISO 42001 is only focused on technical model accuracy and not ethical governance.",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-42001-Q08",
+        "marks": 2,
+        "question_detail": "When managing AI documented information, organizations must ensure:",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-42001-Q09",
+        "marks": 2,
+        "question_detail": "When auditing the organization's understanding of context (Clause 4.1), what should an auditor verify?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-42001-Q10",
+        "marks": 2,
+        "question_detail": "During an AIMS audit, if an employee is unaware of the AIMS policy, what is the auditor's next step?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-42001-Q11",
+        "marks": 2,
+        "question_detail": "Which document should an auditor refer to when checking if risk treatments are appropriately justified?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-42001-Q12",
+        "marks": 2,
+        "question_detail": "How should an auditor handle conflicting information from different sources during an audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-42001-Q13",
+        "marks": 2,
+        "question_detail": "When auditing AI risk assessments, which of the following must the auditor look for?",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-42001-Q14",
+        "marks": 2,
+        "question_detail": "Which questioning technique is MOST effective during an audit interview?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-42001-Q15",
+        "marks": 2,
+        "question_detail": "Which is NOT an appropriate source of audit evidence in an ISO 42001 audit?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-42001-Q16",
+        "marks": 2,
+        "question_detail": "An auditor finds that the management review under Clause 9.3 does not address results of internal audits or stakeholder feedback. What shoul",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-42001-Q17",
+        "marks": 2,
+        "question_detail": "Which major gap would the auditor find related to Clause 8.4 (AI System Impact Assessment)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-42001-Q18",
+        "marks": 2,
+        "question_detail": "What leadership failure is evident from not involving healthcare professionals and data scientists in AIMS policy development?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-42001-Q19",
+        "marks": 2,
+        "question_detail": "Which fundamental auditing principle did the auditor violate by relying only on management documents and not gathering evidence from operati",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-42001-Q20",
+        "marks": 2,
+        "question_detail": "By concluding the audit without raising any findings despite major gaps, what auditing weakness is demonstrated?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-27701",
+    "title": "ISO 27701:2019 Final Exam",
+    "max_attempts": 0,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 40,
+    "passing_percentage": 70,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-27701-final-exam-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-27701-privacy-information-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-ISO-27701-Q01",
+        "marks": 2,
+        "question_detail": "In ISO/IEC 27701, the identification of the organization as a PII Controller or PII Processor is first addressed under which clause?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-ISO-27701-Q02",
+        "marks": 2,
+        "question_detail": "Which of the following is a unique requirement introduced in ISO/IEC 27701 for management review compared to ISO/IEC 27001?",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-ISO-27701-Q03",
+        "marks": 2,
+        "question_detail": "Which clause introduces requirements specific to PII Processors in ISO/IEC 27701:2019?",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-ISO-27701-Q04",
+        "marks": 2,
+        "question_detail": "According to ISO/IEC 27701, which of the following is considered a lawful basis for processing PII?",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-ISO-27701-Q05",
+        "marks": 2,
+        "question_detail": "ISO/IEC 27701 can be implemented independently without ISO/IEC 27001.",
+        "type": "Choices"
+      },
+      {
+        "idx": 6,
+        "question": "QA-ISO-27701-Q06",
+        "marks": 2,
+        "question_detail": "Internal audit requirements under ISO/IEC 27701 are optional if covered under ISO/IEC 27001.",
+        "type": "Choices"
+      },
+      {
+        "idx": 7,
+        "question": "QA-ISO-27701-Q07",
+        "marks": 2,
+        "question_detail": "A PII Controller must only ensure data confidentiality but not integrity or availability.",
+        "type": "Choices"
+      },
+      {
+        "idx": 8,
+        "question": "QA-ISO-27701-Q08",
+        "marks": 2,
+        "question_detail": "Data subject rights such as access, correction, and deletion must be supported by the organization’s PIMS.",
+        "type": "Choices"
+      },
+      {
+        "idx": 9,
+        "question": "QA-ISO-27701-Q09",
+        "marks": 2,
+        "question_detail": "During an audit of Clause 5.2, which evidence would best support the organization’s identification as a PII Controller or Processor?",
+        "type": "Choices"
+      },
+      {
+        "idx": 10,
+        "question": "QA-ISO-27701-Q10",
+        "marks": 2,
+        "question_detail": "While auditing Clause 5.4 (Planning), what should the auditor validate related to PIMS objectives?",
+        "type": "Choices"
+      },
+      {
+        "idx": 11,
+        "question": "QA-ISO-27701-Q11",
+        "marks": 2,
+        "question_detail": "In Clause 7.5 (PII Disclosure), what must the auditor ensure regarding third-party PII sharing?",
+        "type": "Choices"
+      },
+      {
+        "idx": 12,
+        "question": "QA-ISO-27701-Q12",
+        "marks": 2,
+        "question_detail": "An internal auditor must ensure that the Statement of Applicability also covers Annex A controls that are extended for privacy.",
+        "type": "Choices"
+      },
+      {
+        "idx": 13,
+        "question": "QA-ISO-27701-Q13",
+        "marks": 2,
+        "question_detail": "Which audit technique is most suitable to verify implementation of Clause 6.5 (Asset Management)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 14,
+        "question": "QA-ISO-27701-Q14",
+        "marks": 2,
+        "question_detail": "Which questioning technique is MOST effective during an audit interview?",
+        "type": "Choices"
+      },
+      {
+        "idx": 15,
+        "question": "QA-ISO-27701-Q15",
+        "marks": 2,
+        "question_detail": "What should an internal auditor look for when reviewing Clause 5.7 (Performance Evaluation)?",
+        "type": "Choices"
+      },
+      {
+        "idx": 16,
+        "question": "QA-ISO-27701-Q16",
+        "marks": 2,
+        "question_detail": "PII-related incidents are out of scope for audit if they occurred more than 12 months ago.",
+        "type": "Choices"
+      },
+      {
+        "idx": 17,
+        "question": "QA-ISO-27701-Q17",
+        "marks": 2,
+        "question_detail": "As a PII Controller, TechNova’s obligation to inform customers of their rights aligns with which clause?",
+        "type": "Choices"
+      },
+      {
+        "idx": 18,
+        "question": "QA-ISO-27701-Q18",
+        "marks": 2,
+        "question_detail": "What would be the most appropriate audit finding regarding overdue third-party risk reviews?",
+        "type": "Choices"
+      },
+      {
+        "idx": 19,
+        "question": "QA-ISO-27701-Q19",
+        "marks": 2,
+        "question_detail": "Failure to conduct a DPIA for a high-risk processing activity may result in a finding under which clause?",
+        "type": "Choices"
+      },
+      {
+        "idx": 20,
+        "question": "QA-ISO-27701-Q20",
+        "marks": 2,
+        "question_detail": "The absence of privacy-related agenda items in the management review is a nonconformity under:",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-9001-feedback",
+    "title": "ISO 9001:2015 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-9001-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-9001-quality-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 9001 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-14001-feedback",
+    "title": "ISO 14001:2015 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-14001-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-14001-environmental-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 14001 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-45001-feedback",
+    "title": "ISO 45001:2018 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-45001-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-45001-occupational-health-and-safety-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 14001 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-50001-feedback",
+    "title": "ISO 50001:2018 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-50001-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-50001-energy-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 50001 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-22000-feedback",
+    "title": "ISO 22000:2018 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-22000-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-22000-food-safety-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 22000 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-27001-feedback",
+    "title": "ISO 27001:2022 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-27001-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-27001-information-security-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 27001 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-FEEDBACK-MATERIAL",
+        "marks": 0,
+        "question_detail": "How would you rate the comprehensiveness of the training material (e.g., topics, depth of content)?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-13485-feedback",
+    "title": "ISO 13485:2016 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-13485-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-13485-medical-devices-quality-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 13485 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-FEEDBACK-MATERIAL",
+        "marks": 0,
+        "question_detail": "How would you rate the comprehensiveness of the training material (e.g., topics, depth of content)?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-42001-feedback",
+    "title": "ISO 42001:2023 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-42001-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-42001-aims",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 42001 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-FEEDBACK-MATERIAL",
+        "marks": 0,
+        "question_detail": "How would you rate the comprehensiveness of the training material (e.g., topics, depth of content)?",
+        "type": "Choices"
+      }
+    ]
+  },
+  {
+    "name": "quiz-iso-27701-feedback",
+    "title": "ISO 27701:2019 Training Feedback",
+    "max_attempts": 1,
+    "show_answers": 0,
+    "show_submission_history": 0,
+    "total_marks": 0,
+    "passing_percentage": 0,
+    "duration": null,
+    "shuffle_questions": 0,
+    "limit_questions_to": 0,
+    "enable_negative_marking": 0,
+    "marks_to_cut": 1,
+    "lesson": "qa-iso-27701-feedback-lesson",
+    "course": "free-certified-internal-auditor-training-on-iso-27701-privacy-information-management-system",
+    "doctype": "LMS Quiz",
+    "questions": [
+      {
+        "idx": 1,
+        "question": "QA-FEEDBACK-EFFECTIVENESS",
+        "marks": 0,
+        "question_detail": "Overall, how would you rate the effectiveness of the ISO 27701 Internal Auditor Training?",
+        "type": "Choices"
+      },
+      {
+        "idx": 2,
+        "question": "QA-FEEDBACK-INSTRUCTOR",
+        "marks": 0,
+        "question_detail": "Instructor's knowledge and expertise",
+        "type": "Choices"
+      },
+      {
+        "idx": 3,
+        "question": "QA-FEEDBACK-STRUCTURE",
+        "marks": 0,
+        "question_detail": "Course structure - This course was delivered in a suitable amount of time",
+        "type": "Choices"
+      },
+      {
+        "idx": 4,
+        "question": "QA-FEEDBACK-SATISFACTION",
+        "marks": 0,
+        "question_detail": "Overall satisfaction with the training",
+        "type": "Choices"
+      },
+      {
+        "idx": 5,
+        "question": "QA-FEEDBACK-MATERIAL",
+        "marks": 0,
+        "question_detail": "How would you rate the comprehensiveness of the training material (e.g., topics, depth of content)?",
         "type": "Choices"
       }
     ]

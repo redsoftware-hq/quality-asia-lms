@@ -88,9 +88,15 @@ def seed_branding():
 
 # ----------------------------------------------------------------------------- rbac
 def seed_rbac():
+	from frappe.permissions import setup_custom_perms
+
 	d = _load("rbac.json") or {}
 	touched = set()
 	for p in d.get("custom_docperm", []):
+		# Clone standard DocPerm rows into Custom DocPerm first so they are not
+		# silently discarded once we insert our custom row (see QA-38 hotfix).
+		setup_custom_perms(p["parent"])  # no-op when Custom DocPerm already exists
+
 		flt = {"parent": p["parent"], "role": p["role"], "permlevel": p["permlevel"]}
 		name = frappe.db.exists("Custom DocPerm", flt)
 		doc = frappe.get_doc("Custom DocPerm", name) if name else frappe.new_doc("Custom DocPerm")

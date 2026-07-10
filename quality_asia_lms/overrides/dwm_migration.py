@@ -212,8 +212,10 @@ def _user(name, email, mobile, placeholder_log):
 					"first_name": parts[0] or "Candidate",
 					"last_name": parts[1] if len(parts) > 1 else "",
 					"mobile_no": clean_mobile,
+					"enabled": 1,
 					"user_type": "Website User",
 					"send_welcome_email": 0,
+					"is_migrated": 1,
 					"roles": [{"role": "LMS Student"}],
 				}
 			).insert(ignore_permissions=True)
@@ -256,103 +258,112 @@ def run(path=None, template=None):
 	_user_cache = set()
 
 	# bypass user-creation throttle, queue size check, and import-unfriendly validations
+	_prev_in_import = frappe.flags.in_import
+	_prev_in_install = frappe.flags.in_install
 	frappe.flags.in_import = True
 	frappe.flags.in_install = True  # makes User.on_update run create_contact synchronously
 
-	rows = list(_iter_rows(path))
+	try:
+		rows = list(_iter_rows(path))
 
-	created = skipped = failed = 0
-	unmapped_rows: list = []
-	for row in rows:
-		old_id = row["name"]
-		if frappe.db.exists("LMS Certificate", old_id):
-			skipped += 1
-			continue
-		course = _resolve_course(row["training_program_name"])
-		if not course:
-			unmapped_rows.append(row)
-			continue
-		try:
-			member = _user(
-				row["candidate_name"], row.get("email_id"), row.get("contact_number"), placeholder_log
-			)
+		created = skipped = failed = 0
+		unmapped_rows: list = []
+		for row in rows:
+			old_id = row["name"]
+			if frappe.db.exists("LMS Certificate", old_id):
+				skipped += 1
+				continue
+			course = _resolve_course(row["training_program_name"])
+			if not course:
+				unmapped_rows.append(row)
+				continue
+			try:
+				member = _user(
+					row["candidate_name"], row.get("email_id"), row.get("contact_number"), placeholder_log
+				)
 
-			enrollment_name = frappe.db.get_value("LMS Enrollment", {"member": member, "course": course})
-			if not enrollment_name:
-				enrollment = frappe.get_doc(
+				enrollment_name = frappe.db.get_value(
+					"LMS Enrollment", {"member": member, "course": course}
+				)
+				if not enrollment_name:
+					enrollment = frappe.get_doc(
+						{
+							"doctype": "LMS Enrollment",
+							"member": member,
+							"course": course,
+							"progress": 100,
+						}
+					)
+					enrollment.flags.ignore_permissions = True
+					enrollment.flags.ignore_mandatory = True
+					enrollment.insert()
+					enrollment_name = enrollment.name
+
+				cert = frappe.get_doc(
 					{
-						"doctype": "LMS Enrollment",
+						"doctype": "LMS Certificate",
 						"member": member,
 						"course": course,
-						"progress": 100,
+						"issue_date": row["date_of_issue"],
+						"template": template,
+						"published": 1,
+						"training_dates": row.get("training_dates"),
+						"candidate_name_as_printed": row["candidate_name"],
+						"is_migrated": 1,
 					}
 				)
-				enrollment.flags.ignore_permissions = True
-				enrollment.flags.ignore_mandatory = True
-				enrollment.insert()
-				enrollment_name = enrollment.name
+				cert.flags.ignore_permissions = True
+				cert.flags.ignore_validate = (
+					True  # bypass duplicate-cert-per-course check; historical data may have multiples
+				)
+				cert.insert(set_name=old_id)
 
-			cert = frappe.get_doc(
-				{
-					"doctype": "LMS Certificate",
-					"member": member,
-					"course": course,
-					"issue_date": row["date_of_issue"],
-					"template": template,
-					"published": 1,
-					"training_dates": row.get("training_dates"),
-					"candidate_name_as_printed": row["candidate_name"],
-				}
+				frappe.db.set_value(
+					"LMS Certificate",
+					old_id,
+					{"creation": row["creation"], "modified": row["modified"]},
+					update_modified=False,
+				)
+				frappe.db.set_value(
+					"LMS Enrollment", enrollment_name, "certificate", old_id, update_modified=False
+				)
+
+				created += 1
+				if created % 500 == 0:
+					frappe.db.commit()
+					print(created, "done")
+			except Exception:
+				frappe.log_error(title=f"Cert migration failed: {old_id}")
+				failed += 1
+
+		import csv as _csv
+		import io
+
+		frappe.db.commit()
+
+		if placeholder_log:
+			buf = io.StringIO()
+			_csv.writer(buf).writerows(
+				[("candidate_name", "mobile", "placeholder_email"), *placeholder_log]
 			)
-			cert.flags.ignore_permissions = True
-			cert.flags.ignore_validate = (
-				True  # bypass duplicate-cert-per-course check; historical data may have multiples
-			)
-			cert.insert(set_name=old_id)
+			_save_private_file("dwm_placeholder_users.csv", buf.getvalue())
 
-			frappe.db.set_value(
-				"LMS Certificate",
-				old_id,
-				{"creation": row["creation"], "modified": row["modified"]},
-				update_modified=False,
-			)
-			frappe.db.set_value(
-				"LMS Enrollment", enrollment_name, "certificate", old_id, update_modified=False
-			)
+		if unmapped_rows:
+			buf = io.StringIO()
+			writer = _csv.DictWriter(buf, fieldnames=sorted(_NEEDED), delimiter="\t")
+			writer.writeheader()
+			writer.writerows(unmapped_rows)
+			_save_private_file("dwm_unmapped_rows.tsv", buf.getvalue())
 
-			created += 1
-			if created % 500 == 0:
-				frappe.db.commit()
-				print(created, "done")
-		except Exception:
-			frappe.log_error(title=f"Cert migration failed: {old_id}")
-			failed += 1
-
-	import csv as _csv
-	import io
-
-	frappe.db.commit()
-
-	if placeholder_log:
-		buf = io.StringIO()
-		_csv.writer(buf).writerows(
-			[("candidate_name", "mobile", "placeholder_email"), *placeholder_log]
+		summary = (
+			f"created={created} skipped={skipped} unmapped={len(unmapped_rows)} "
+			f"failed={failed} placeholders={len(placeholder_log)}"
 		)
-		_save_private_file("dwm_placeholder_users.csv", buf.getvalue())
-
-	if unmapped_rows:
-		buf = io.StringIO()
-		writer = _csv.DictWriter(buf, fieldnames=sorted(_NEEDED), delimiter="\t")
-		writer.writeheader()
-		writer.writerows(unmapped_rows)
-		_save_private_file("dwm_unmapped_rows.tsv", buf.getvalue())
-
-	summary = (
-		f"created={created} skipped={skipped} unmapped={len(unmapped_rows)} "
-		f"failed={failed} placeholders={len(placeholder_log)}"
-	)
-	print(summary)
-	return summary
+		print(summary)
+		return summary
+	finally:
+		frappe.flags.in_import = _prev_in_import
+		frappe.flags.in_install = _prev_in_install
 
 
 def validate():
@@ -399,12 +410,16 @@ def migrate_if_dump_present():
 	"""
 	from datetime import datetime
 
+	from quality_asia_lms.overrides.migrated_users import enable_real_email_users
+
 	path = _default_dump_path()
 	if not os.path.exists(path):
 		return
 
 	run_summary = run(path)
 	validate_summary = validate()
+
+	enable_real_email_users()
 
 	log = f"--- {datetime.utcnow().isoformat()} UTC ---\nrun:      {run_summary}\nvalidate: {validate_summary}\n"
 	_save_private_file("dwm_migration_log.txt", log)

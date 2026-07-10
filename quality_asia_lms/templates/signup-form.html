@@ -95,9 +95,9 @@
 
     // Returns null if ok, else a user-facing error string.
     const check_file = (file, re, max_mb) => {
-        if (!re.test(file.name)) return '{{ _("Unsupported file type") }}';
+        if (!re.test(file.name)) return '{{ _("This file type is not supported. Please choose a different file.") }}';
         if (file.size > max_mb * 1024 * 1024) {
-            return '{{ _("File too large (max ") }}' + max_mb + ' MB)';
+            return '{{ _("This file is too large. Maximum size is ") }}' + max_mb + ' MB.';
         }
         return null;
     };
@@ -126,13 +126,13 @@
         const address = ($("#signup_address").val() || "").trim();
 
         if (!email || !validate_email(email) || !full_name) {
-            login.set_status('{{ _("Valid email and name required") }}', 'red');
+            login.set_status('{{ _("Please enter your name and a valid email address.") }}', 'red');
             return false;
         }
 
         const digits = mobile_no.replace(/\D/g, "");
         if (digits.length < 7 || digits.length > 15) {
-            login.set_status('{{ _("Please enter a valid mobile number") }}', 'red');
+            login.set_status('{{ _("Please enter a valid mobile number.") }}', 'red');
             return false;
         }
 
@@ -162,14 +162,42 @@
                 args.resume_content = await read_base64(resume_file);
             }
         } catch (err) {
-            login.set_status('{{ _("Could not read the uploaded file") }}', 'red');
+            login.set_status('{{ _("Could not read the uploaded file. Please try a different one.") }}', 'red');
             return false;
         }
 
+        login.set_status('{{ _("Creating your account...") }}', 'blue');
         frappe.call({
             method: "quality_asia_lms.overrides.signup.sign_up",
             args: args,
-            statusCode: login.login_handlers
+            callback: function(r) {
+                if (!r.message) return;
+                var code = cint(r.message[0]);
+                var msg = r.message[1];
+                if (code === 0) {
+                    // Enabled existing user — welcome back + reset link.
+                    login.set_status('{{ _("Sign up") }}', 'blue');
+                    frappe.msgprint({
+                        title: '{{ _("Welcome Back!") }}',
+                        indicator: 'blue',
+                        message: msg + ' <a href="#forgot">{{ _("Reset your password") }}</a>'
+                    });
+                } else if (code === 2) {
+                    // Disabled account (placeholder) — contact admin, no reset link.
+                    login.set_status('{{ _("Sign up") }}', 'blue');
+                    frappe.msgprint({
+                        title: '{{ _("Almost There!") }}',
+                        indicator: 'yellow',
+                        message: msg
+                    });
+                } else {
+                    login.set_status('{{ _("You are all set!") }}', 'green');
+                    frappe.msgprint(msg);
+                }
+            },
+            error: function() {
+                login.set_status('{{ _("Sign up") }}', 'blue');
+            }
         })
         return false;
     }

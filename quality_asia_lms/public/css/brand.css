@@ -52,3 +52,18 @@ button > img.h-8.w-8 {
 .bg-surface-cards > div {
 	border-color: #ffa2a2 !important;
 }
+
+/* --- Login page: hide Frappe Cloud and Email-Link login buttons (D4) ---
+ * These are Frappe-level features injected on Frappe Cloud hosted sites.
+ * Hiding via CSS is the no-fork approach (the buttons are gated by runtime
+ * flags we can't suppress from app code). */
+.btn-login-with-frappe-cloud,
+.login-with-email-link {
+	display: none !important;
+}
+/* Hide the "or" divider when both social options are gone and only
+ * the basic email/password form remains. The divider sits inside
+ * .social-logins and appears above the social-login-buttons. */
+.social-logins > .login-divider:first-child:last-of-type {
+	display: none !important;
+}
