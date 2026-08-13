@@ -1,17 +1,19 @@
-"""Seed the 11-08 batch of Internal Auditor training certificates from an xlsx.
+"""Seed batches of Internal Auditor training certificates from client spreadsheets.
 
 The client ships a spreadsheet of completed trainings; each row becomes a
 published `LMS Certificate` plus the `User` / `LMS Enrollment` needed to hang it
-off. Only the "Internal Auditor Training Cert" sheet is read — the workbook's
-second sheet was seeded in an earlier batch and is deliberately ignored.
+off. Two batches are defined in BATCHES below; each is driven by a patch.
 
-The spreadsheet holds candidate names, emails and phone numbers, so it is NOT
-committed to this repo. Place it on the site and point the runner at it:
+The spreadsheets hold candidate names, emails and phone numbers, so they are NOT
+committed to this repo. Place the file on the site and run:
 
     scp "<xlsx>" <server>:/.../sites/<site>/private/files/
     bench --site <site> execute quality_asia_lms.setup.seed_certificates.reconcile
     bench --site <site> execute quality_asia_lms.setup.seed_certificates.run
     # then delete the xlsx from the server
+
+Both entry points take a `batch` kwarg naming a key in BATCHES; it defaults to
+the 11-08 batch, e.g. --kwargs "{'batch': 'itsms'}".
 
 `reconcile()` is read-only — run it first. `run()` is idempotent: it skips rows
 whose (member, course) certificate already exists, so a partial run resumes
@@ -28,8 +30,13 @@ This makes the row->number mapping identical on every run. A running counter
 would drift on a re-run, because skipped rows would no longer consume a number.
 
 `start` is detected from the site's current highest IAC number on the first run
-and then stored, so it survives certificates issued in the meantime by the live
-portal without ever moving underneath a resumed row. See `_resolve_start`.
+and then stored under the batch's own key, so it survives certificates issued in
+the meantime by the live portal without ever moving underneath a resumed row.
+See `_resolve_start`.
+
+Batches run back to back in one `bench migrate`, in patches.txt order. Each one
+claims the top of its block on its first insert, so the next batch's
+`_scan_max_iac` sees that ceiling and allocates cleanly above it.
 
 A row that is skipped, unmapped or failed leaves its number unused rather than
 letting later rows slide down into it — that is what keeps the mapping stable,
@@ -43,6 +50,7 @@ renders happen during the run.
 
 import os
 import re
+from dataclasses import dataclass, field
 
 import frappe
 from frappe.utils import getdate
@@ -50,24 +58,16 @@ from frappe.utils import getdate
 from quality_asia_lms.overrides import dwm_migration as dwm
 
 TEMPLATE = "QA Certificate"
-DATA_FILE = "Internal Auditor Training Certificate - 11-08.xlsx"
-SHEET = "Internal Auditor Training Cert"
-
-# Key in tabDefaultValue holding this batch's allocated block start.
-START_KEY = "ia_cert_seed_11_08_start"
 
 # Matches the tolerant pattern QALMSCertificate._next_iac_number uses, so we
 # agree with autoname about what counts as a number — including the legacy
 # "IAC -XXXXX" space variants from the DWM import.
 _IAC_RE = re.compile(r"^IAC\s*-\s*0*(\d+)$", re.IGNORECASE)
 
-# Guards against the wrong workbook being dropped in private/files.
-EXPECTED_ROWS = 611
-
 # Users created for rows whose email cell holds something that isn't an address.
 PLACEHOLDER_DOMAIN = "@placeholder.qualityasia.in"
 
-# Column order in the sheet, left to right.
+# Column order in the sheets, left to right. Both batches share this layout.
 COL_CANDIDATE = 1
 COL_PROGRAM = 2
 COL_TRAINING_DATES = 3
@@ -75,16 +75,87 @@ COL_ISSUE_DATE = 4
 COL_EMAIL = 5
 COL_CONTACT = 6
 
+# The ITSMS course does not exist on the site and has no content — it exists only
+# to anchor its certificates, so it is unpublished and certification-free.
+#
+# The title is deliberately the dangling phrase "ITSMS Awareness and". The
+# QA Certificate print format renders
+#     HAS SUCESSFULLY COMPLETED {{ course_title }} INTERNAL AUDITOR TRAINING PROGRAM
+# so this title makes the sentence read "ITSMS Awareness and Internal Auditor
+# Training Program" — the client's required wording — with no change to the
+# shared print format, which every other certificate on the site also renders
+# through. The ISO standard lives in the slug, short_introduction and tags
+# instead of the title.
+ITSMS_COURSE = {
+	"name": "iso-20000-1-2018-itsms-awareness-and-internal-auditor-training",
+	"title": "ITSMS Awareness and",
+	"short_introduction": "ISO 20000-1:2018 - IT Service Management System (ITSMS)",
+	"description": "ISO 20000-1:2018 ITSMS Awareness and Internal Auditor Training.",
+	"tags": "ISO 20000-1:2018",
+	"published": 0,
+	"enable_certification": 0,
+}
 
-def _default_path():
-	return frappe.get_site_path("private", "files", DATA_FILE)
+
+@dataclass(frozen=True)
+class Batch:
+	"""One spreadsheet's worth of certificates."""
+
+	key: str
+	data_file: str
+	sheet: str
+	expected_rows: int
+	start_key: str  # tabDefaultValue key holding this batch's allocated block start
+	report_prefix: str
+	# Program text -> LMS Course name, for batches whose sheet wording differs
+	# from the course title. Empty means resolve by title as usual.
+	course_by_program: dict = field(default_factory=dict)
+	# Course to create before seeding, when the batch's course is not on the site.
+	course_spec: dict | None = None
+
+
+BATCHES = {
+	"11_08": Batch(
+		key="11_08",
+		data_file="Internal Auditor Training Certificate - 11-08.xlsx",
+		sheet="Internal Auditor Training Cert",
+		expected_rows=611,
+		start_key="ia_cert_seed_11_08_start",
+		report_prefix="ia_cert_seed_11_08",
+	),
+	"itsms": Batch(
+		key="itsms",
+		data_file="Internal Auditor Training Certificate - 12-08 - Nelito.xlsx",
+		sheet="Internal Auditor Training Certi",
+		expected_rows=13,
+		start_key="ia_cert_seed_12_08_itsms_start",
+		report_prefix="ia_cert_seed_12_08_itsms",
+		course_by_program={
+			"itsms awareness and internal auditor training": ITSMS_COURSE["name"],
+		},
+		course_spec=ITSMS_COURSE,
+	),
+}
+
+DEFAULT_BATCH = "11_08"
+
+
+def _batch(key):
+	batch = BATCHES.get(key)
+	if not batch:
+		frappe.throw(f"Unknown batch {key!r}. Known: {sorted(BATCHES)}")
+	return batch
+
+
+def _default_path(batch):
+	return frappe.get_site_path("private", "files", batch.data_file)
 
 
 def _log(msg):
 	print(f"[qa-cert-seed] {msg}")
 
 
-def _rows(path):
+def _rows(path, batch):
 	"""Read the sheet into dicts, dropping fully-blank rows.
 
 	Order is the sheet's own order and is what the numbering indexes against, so
@@ -93,11 +164,11 @@ def _rows(path):
 	from openpyxl import load_workbook
 
 	wb = load_workbook(path, data_only=True, read_only=True)
-	if SHEET not in wb.sheetnames:
-		frappe.throw(f"Sheet {SHEET!r} not found in {path} (found: {wb.sheetnames})")
+	if batch.sheet not in wb.sheetnames:
+		frappe.throw(f"Sheet {batch.sheet!r} not found in {path} (found: {wb.sheetnames})")
 
 	rows = []
-	for raw in wb[SHEET].iter_rows(min_row=2, values_only=True):
+	for raw in wb[batch.sheet].iter_rows(min_row=2, values_only=True):
 		if not any(raw):
 			continue
 		contact = raw[COL_CONTACT]
@@ -121,6 +192,29 @@ def _usable_email(email):
 	return bool(email) and bool(dwm.EMAIL_RE.match(email)) and dwm._is_valid_email(email)
 
 
+def _course_for(program, batch):
+	"""Resolve a sheet's program text to an LMS Course, honouring batch overrides."""
+	override = batch.course_by_program.get((program or "").strip().lower())
+	return override or dwm._resolve_course(program)
+
+
+def _ensure_course(spec):
+	"""Create the batch's course if absent. Idempotent; never edits an existing one.
+
+	`instructors` is a required field, filled by the auto_assign_mentor
+	before_insert hook (hooks.py) — ignore_mandatory covers sites where the
+	mentor user does not exist.
+	"""
+	if frappe.db.exists("LMS Course", spec["name"]):
+		return spec["name"]
+	doc = frappe.get_doc({**spec, "doctype": "LMS Course"})
+	doc.flags.ignore_permissions = True
+	doc.flags.ignore_mandatory = True
+	doc.insert(set_name=spec["name"])
+	_log(f"created course {spec['name']} (title={spec['title']!r}, published={spec['published']})")
+	return doc.name
+
+
 def _cert_name(index, start):
 	return f"IAC-{start + index:05d}"
 
@@ -135,12 +229,12 @@ def _scan_max_iac():
 	return top
 
 
-def _resolve_start(row_count, persist=False):
+def _resolve_start(row_count, batch, persist=False):
 	"""First number of this batch's block: detected once, then reused forever.
 
 	This is a live portal — real users earn certificates through
-	QALMSCertificate.autoname between the day this batch is scoped and the day it
-	is deployed, so a hardcoded start would collide and abort the run.
+	QALMSCertificate.autoname between the day a batch is scoped and the day it is
+	deployed, so a hardcoded start would collide and abort the run.
 
 	But the value must also stay put across re-runs. If it were recomputed each
 	time, a resumed run would see a higher max and give row N a different number
@@ -148,7 +242,7 @@ def _resolve_start(row_count, persist=False):
 	the first run stores its allocation and every later run reads it back, which
 	is also what lets a FAILED row reclaim its original number on a retry.
 	"""
-	stored = frappe.db.get_default(START_KEY)
+	stored = frappe.db.get_default(batch.start_key)
 	if stored:
 		return int(stored)
 
@@ -161,11 +255,11 @@ def _resolve_start(row_count, persist=False):
 		frappe.throw(f"Cannot allocate a free block at {start}: {clash[:5]} already exist.")
 
 	if persist:
-		frappe.db.set_default(START_KEY, start)
+		frappe.db.set_default(batch.start_key, start)
 	return start
 
 
-def _classify_range(rows, start):
+def _classify_range(rows, start, batch):
 	"""Split occupied target numbers into (ours, foreign).
 
 	A target number is *ours* when the certificate sitting on it already has the
@@ -192,7 +286,7 @@ def _classify_range(rows, start):
 		found = existing.get(_cert_name(index, start))
 		if not found:
 			continue
-		course = dwm._resolve_course(row["program"])
+		course = _course_for(row["program"], batch)
 		same_member = not row["email"] or found["member"] == row["email"]
 		if found["course"] == course and same_member:
 			ours.append(found["name"])
@@ -204,49 +298,54 @@ def _classify_range(rows, start):
 # ── entry points ─────────────────────────────────────────────────────────────
 
 
-def reconcile(path=None):
+def reconcile(path=None, batch=DEFAULT_BATCH):
 	"""Read-only preview: course mapping, numbering block, and expected skips.
 
 	Writes nothing. Run this before run() and check every line.
 	"""
-	path = path or _default_path()
+	batch = _batch(batch)
+	path = path or _default_path(batch)
 	if not os.path.exists(path):
 		frappe.throw(f"Data file not found: {path}")
 
 	dwm._course_titles = None  # force a fresh course cache
-	rows = _rows(path)
+	rows = _rows(path, batch)
 
+	_log(f"batch: {batch.key}")
 	_log(f"file:  {path}")
-	_log(f"rows:  {len(rows)} (expected {EXPECTED_ROWS})")
-	if len(rows) != EXPECTED_ROWS:
-		_log("!! ROW COUNT MISMATCH — wrong file, or EXPECTED_ROWS needs updating")
+	_log(f"rows:  {len(rows)} (expected {batch.expected_rows})")
+	if len(rows) != batch.expected_rows:
+		_log("!! ROW COUNT MISMATCH — wrong file, or expected_rows needs updating")
+
+	if batch.course_spec and not frappe.db.exists("LMS Course", batch.course_spec["name"]):
+		_log(f"course {batch.course_spec['name']} does not exist yet — run() will create it")
 
 	programs = {}
 	for row in rows:
 		programs[row["program"]] = programs.get(row["program"], 0) + 1
 
 	_log("")
-	_log(f"{'rows':>6}  {'program':<20} resolution")
+	_log(f"{'rows':>6}  {'program':<46} resolution")
 	unmapped = 0
 	for program, count in sorted(programs.items(), key=lambda kv: -kv[1]):
-		course = dwm._resolve_course(program)
+		course = _course_for(program, batch)
 		if not course:
 			unmapped += count
-		_log(f"{count:>6}  {program:<20} {'-> ' + course if course else 'UNMAPPED (rows will be skipped)'}")
+		_log(f"{count:>6}  {program:<46} {'-> ' + course if course else 'UNMAPPED (rows will be skipped)'}")
 
 	_log("")
-	start = _resolve_start(len(rows), persist=False)  # preview only — never stores
-	stored = frappe.db.get_default(START_KEY)
+	start = _resolve_start(len(rows), batch, persist=False)  # preview only — never stores
+	stored = frappe.db.get_default(batch.start_key)
 	_log(f"block start: {start} ({'already allocated' if stored else 'would be allocated now'})")
 	if rows:
 		_log(f"numbering: {_cert_name(0, start)} .. {_cert_name(len(rows) - 1, start)}")
-	ours, foreign = _classify_range(rows, start)
+	ours, foreign = _classify_range(rows, start, batch)
 	_log(f"already seeded by a previous run (will resume): {len(ours)}")
 	_log(f"FOREIGN collisions (would abort): {len(foreign)}{' -> ' + str(foreign[:20]) if foreign else ''}")
 
 	existing = 0
 	for row in rows:
-		course = dwm._resolve_course(row["program"])
+		course = _course_for(row["program"], batch)
 		if course and frappe.db.exists(
 			"LMS Certificate", {"member": row["email"], "course": course}
 		):
@@ -259,14 +358,15 @@ def reconcile(path=None):
 	_log(f"unmapped rows (will skip): {unmapped}")
 	_log(f"=> expected created: {len(rows) - existing - unmapped}")
 	return (
-		f"rows={len(rows)} resumable={len(ours)} foreign={len(foreign)} "
+		f"batch={batch.key} rows={len(rows)} resumable={len(ours)} foreign={len(foreign)} "
 		f"existing={existing} unmapped={unmapped}"
 	)
 
 
-def run(path=None, limit=None):
+def run(path=None, limit=None, batch=DEFAULT_BATCH):
 	"""Create the certificates. Idempotent on (member, course)."""
-	path = path or _default_path()
+	batch = _batch(batch)
+	path = path or _default_path(batch)
 	if not os.path.exists(path):
 		frappe.throw(f"Data file not found: {path}")
 
@@ -274,29 +374,32 @@ def run(path=None, limit=None):
 	dwm._course_titles = None
 	dwm._user_cache = set()
 
-	rows = _rows(path)
-	if len(rows) != EXPECTED_ROWS:
+	rows = _rows(path, batch)
+	if len(rows) != batch.expected_rows:
 		frappe.throw(
-			f"Refusing to run: sheet has {len(rows)} rows, expected {EXPECTED_ROWS}. "
-			f"Wrong file, or update EXPECTED_ROWS deliberately."
+			f"Refusing to run: sheet has {len(rows)} rows, expected {batch.expected_rows}. "
+			f"Wrong file, or update the batch's expected_rows deliberately."
 		)
+
+	if batch.course_spec:
+		_ensure_course(batch.course_spec)
 
 	if limit:
 		rows = rows[: int(limit)]
 
-	start = _resolve_start(len(rows), persist=True)
-	_log(f"block start: {start} -> {_cert_name(0, start)} .. {_cert_name(len(rows) - 1, start)}")
+	start = _resolve_start(len(rows), batch, persist=True)
+	_log(f"batch {batch.key} block start: {start} -> {_cert_name(0, start)} .. {_cert_name(len(rows) - 1, start)}")
 
 	# Pre-flight: no target number may belong to an unrelated certificate, or we
 	# write nothing at all. Numbers held by this batch's own earlier run are fine
 	# — those rows get skipped below and the run resumes.
-	ours, foreign = _classify_range(rows, start)
+	ours, foreign = _classify_range(rows, start, batch)
 	if foreign:
 		frappe.throw(
 			f"Refusing to run: {len(foreign)} target certificate numbers belong to "
 			f"unrelated certificates (e.g. {foreign[:5]}). The allocated block start "
-			f"({start}, stored under default {START_KEY!r}) is wrong for this site. Do "
-			f"not shift numbers ad hoc — investigate, then clear that default to "
+			f"({start}, stored under default {batch.start_key!r}) is wrong for this site. "
+			f"Do not shift numbers ad hoc — investigate, then clear that default to "
 			f"reallocate."
 		)
 	if ours:
@@ -325,7 +428,7 @@ def run(path=None, limit=None):
 		for index in order:
 			row = rows[index]
 			cert_name = _cert_name(index, start)
-			course = dwm._resolve_course(row["program"])
+			course = _course_for(row["program"], batch)
 			if not course:
 				unmapped += 1
 				report.append((cert_name, row["email"], row["program"], "UNMAPPED"))
@@ -403,17 +506,17 @@ def run(path=None, limit=None):
 		frappe.flags.in_import = prev_import
 		frappe.flags.in_install = prev_install
 
-	_write_reports(report, placeholder_log)
+	_write_reports(report, placeholder_log, batch)
 
 	summary = (
-		f"created={created} skipped={skipped} unmapped={unmapped} "
+		f"batch={batch.key} created={created} skipped={skipped} unmapped={unmapped} "
 		f"failed={failed} placeholders={len(placeholder_log)}"
 	)
 	_log(summary)
 	return summary
 
 
-def _write_reports(report, placeholder_log):
+def _write_reports(report, placeholder_log, batch):
 	"""Save the row->number mapping (and any placeholder users) as private Files."""
 	import csv
 	import io
@@ -422,13 +525,13 @@ def _write_reports(report, placeholder_log):
 	writer = csv.writer(buf)
 	writer.writerow(("certificate", "member", "program", "status"))
 	writer.writerows(sorted(report))  # run order is top-first; report reads better sorted
-	dwm._save_private_file("ia_cert_seed_11_08_mapping.csv", buf.getvalue())
+	dwm._save_private_file(f"{batch.report_prefix}_mapping.csv", buf.getvalue())
 
 	if placeholder_log:
 		buf = io.StringIO()
 		csv.writer(buf).writerows(
 			[("candidate_name", "mobile", "placeholder_email"), *placeholder_log]
 		)
-		dwm._save_private_file("ia_cert_seed_11_08_placeholders.csv", buf.getvalue())
+		dwm._save_private_file(f"{batch.report_prefix}_placeholders.csv", buf.getvalue())
 
 	frappe.db.commit()
