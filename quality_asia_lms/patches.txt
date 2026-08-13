@@ -30,3 +30,4 @@ quality_asia_lms.patches.v1_0.mark_migrated_records
 quality_asia_lms.patches.v1_0.backfill_stranded_invoices
 quality_asia_lms.patches.v1_0.cleanup_orphan_payments
 quality_asia_lms.patches.v1_0.add_invoice_number_unique_index
+quality_asia_lms.patches.v1_0.seed_ia_certificates_11_08
