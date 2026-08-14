@@ -363,6 +363,37 @@ def reconcile(path=None, batch=DEFAULT_BATCH):
 	)
 
 
+def run_from_patch(batch_key):
+	"""Entry point for the seeding patches — the only thing they should call.
+
+	Both patches route through here so a signature change in this module cannot
+	leave one of them calling a stale API. That is exactly how the 11-08 patch
+	broke on its first deploy: it still called _default_path() with no argument
+	after the batch refactor added one, raised TypeError before reaching its own
+	file check, and was skipped by `bench migrate --skip-failing`.
+
+	Returns None when the spreadsheet is absent, having logged to Error Log —
+	the patch is then recorded as executed and will not retry on its own.
+	"""
+	batch = _batch(batch_key)
+	path = _default_path(batch)
+	if not os.path.exists(path):
+		frappe.log_error(
+			message=(
+				f"Expected the spreadsheet for batch {batch_key!r} at {path}, but it "
+				f"was not there.\n"
+				f"This patch is now recorded as executed and will NOT re-run.\n"
+				f"Upload the file, then run:\n"
+				f"  bench --site {frappe.local.site} execute "
+				f"quality_asia_lms.setup.seed_certificates.run "
+				f"--kwargs \"{{'batch': '{batch_key}'}}\""
+			),
+			title=f"cert seed {batch_key}: data file missing, patch consumed",
+		)
+		return None
+	return run(path, batch=batch_key)
+
+
 def run(path=None, limit=None, batch=DEFAULT_BATCH):
 	"""Create the certificates. Idempotent on (member, course)."""
 	batch = _batch(batch)
