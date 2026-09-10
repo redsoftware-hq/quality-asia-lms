@@ -7,7 +7,10 @@
  * forking the LMS frontend.
  *
  * Concerns:
- *   1. Remove GST / PAN / "Where did you hear" / Country / Coupon from billing
+ *   1. Remove GST / PAN / "Where did you hear" / Country from billing
+ *      (Coupon was removed in this same sweep originally, but was
+ *      re-added later at client request — it is intentionally left
+ *      untouched by this script.)
  *   2. Auto-redirect logged-out users from billing to /login
  *   3. Mask the transient "Not Permitted" card on billing (all connections)
  *   4. Replace the confusing "0 out of 0" quiz summary for ungraded quizzes
@@ -144,31 +147,8 @@
 			}
 		}
 
-		// Remove the coupon code block — it's a self-contained div with "Enter a Coupon Code"
-		var allDivs = main.querySelectorAll("div");
-		for (var j = 0; j < allDivs.length; j++) {
-			var d = allDivs[j];
-			if (/Enter a Coupon Code/i.test(d.textContent || "")) {
-				// Find the outermost coupon container (has bg-surface-gray-2 class)
-				if (d.classList && d.classList.contains("bg-surface-gray-2")) {
-					d.remove();
-					removed++;
-					break;
-				}
-				// Or if the text is inside a span, walk up to the bg-surface-gray-2 wrapper
-				var parent = d;
-				for (var k = 0; k < 4; k++) {
-					parent = parent.parentElement;
-					if (!parent) break;
-					if (parent.classList && parent.classList.contains("bg-surface-gray-2")) {
-						parent.remove();
-						removed++;
-						break;
-					}
-				}
-				if (removed > 4) break;
-			}
-		}
+		// Coupon code block is intentionally left in place — re-added later
+		// at client request. Do not strip it here.
 
 		// Also hide the GST Amount line in the order summary sidebar
 		var summaryLabels = main.querySelectorAll("span, div");
